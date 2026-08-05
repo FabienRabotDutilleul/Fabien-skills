@@ -1,4 +1,4 @@
-# claude-skills
+# Fabien-skills
 
 Ma collection de skills pour Claude Code — 46 skills rangés par usage plutôt que par ordre
 d'arrivée. Chaque dossier principal porte son propre README qui explique brièvement ce que fait
@@ -32,7 +32,7 @@ chacun de ses skills.
 > hook PreToolUse / pre-exec sur **tous** les agents de la machine, pas seulement Claude Code.
 >
 > ```bash
-> ln -s ~/dev/claude-skills/agent-ops/global-agent-guardrails ~/.claude/skills/global-agent-guardrails
+> ln -s ~/dev/Fabien-skills/agent-ops/global-agent-guardrails ~/.claude/skills/global-agent-guardrails
 > ```
 >
 > Puis demande à l'agent : *« installe global-agent-guardrails »*. Il fait le reste.
@@ -58,13 +58,13 @@ projet). Le plus simple est de symlinker plutôt que copier — les mises à jou
 toutes seules :
 
 ```bash
-git clone https://github.com/<toi>/claude-skills.git ~/dev/claude-skills
+git clone https://github.com/FabienRabotDutilleul/Fabien-skills.git ~/dev/Fabien-skills
 
 # un skill en global
-ln -s ~/dev/claude-skills/engineering/tdd ~/.claude/skills/tdd
+ln -s ~/dev/Fabien-skills/engineering/tdd ~/.claude/skills/tdd
 
 # un skill sur un projet précis
-ln -s ~/dev/claude-skills/kb/ingest/ingest_xlsx <projet>/.claude/skills/ingest_xlsx
+ln -s ~/dev/Fabien-skills/kb/ingest/ingest_xlsx <projet>/.claude/skills/ingest_xlsx
 ```
 
 Certains skills embarquent des scripts avec leurs propres dépendances (`uv sync`, `npm i`) —
