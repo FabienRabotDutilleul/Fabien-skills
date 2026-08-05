@@ -37,7 +37,6 @@ Le couple `classify_output` / `inject_into_knowledge_base` matérialise une dist
 structurante : **`refs/` = ce qui a été reçu, `kb/` = ce qui a été compris**. Les deux skills
 supposent cette arborescence et un frontmatter OKF dans le dépôt cible.
 
-## Attribution
+## Basé sur le standard de knowledge based de Google
 
-Les trois `channel-to-kb*` viennent du travail de **Cole Medin**. `watch` est sous licence MIT,
-© [bradautomates](https://github.com/bradautomates/claude-video).
+https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf
