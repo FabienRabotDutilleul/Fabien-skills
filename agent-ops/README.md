@@ -12,11 +12,17 @@ projet donné.
 | `setup-matt-pocock-skills` | Configure un dépôt pour accueillir les skills d'`engineering/` : tracker d'issues, vocabulaire de labels de triage, layout des docs de domaine. À lancer une fois, avant le premier usage des autres. |
 | `ask-matt` | Le routeur : décrit ta situation, il te dit quel skill ou quel enchaînement prendre. Le point d'entrée quand tu ne sais pas par où commencer. |
 
-## Ordre d'installation recommandé
+## Ordre d'installation
 
-1. `global-agent-guardrails` — avant tout le reste, sur une machine neuve.
-2. `setup-matt-pocock-skills` — une fois par dépôt qui utilisera `engineering/`.
-3. Le reste au besoin.
+> [!IMPORTANT]
+> ### 🛑 `global-agent-guardrails` est **obligatoire chez Rabot Dutilleul**
+>
+> À installer **à la première utilisation**, avant tout autre skill. Aucun agent ne tourne sur
+> une machine qui n'a pas le garde-fou. Une seule fois par machine, jamais par projet.
+
+1. 🛑 **`global-agent-guardrails`** — avant tout le reste, une fois par machine.
+2. ⚙️ `setup-matt-pocock-skills` — une fois par dépôt qui utilisera `engineering/`.
+3. ✅ Le reste au besoin.
 
 ## Attribution
 

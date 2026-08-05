@@ -1,0 +1,225 @@
+#!/bin/bash
+# Menu interactif pour empecher Windows de se mettre en veille depuis WSL.
+# Toute la logique vit dans le skill anti-sleep ; ce script n'est qu'une facade.
+set -uo pipefail
+
+# Le moteur est cherche dans l'ordre : variable d'environnement, installation
+# standard (install_awake.sh), puis le skill Claude sur les postes qui l'ont.
+AWAKE_HOME="${AWAKE_HOME:-}"
+for candidate in \
+  "$AWAKE_HOME" \
+  "${HOME}/.local/share/awake" \
+  "${HOME}/.claude/skills/anti-sleep/scripts"
+do
+  [[ -n "$candidate" && -x "${candidate}/anti-sleep.sh" ]] || continue
+  AWAKE_HOME="$candidate"
+  break
+done
+
+ENGINE="${AWAKE_HOME}/anti-sleep.sh"
+PROBE="${AWAKE_HOME}/sleep-probe.sh"
+
+[[ -x "$ENGINE" ]] || {
+  echo "Moteur anti-veille introuvable." >&2
+  echo "Lancez install_awake.sh, ou definissez AWAKE_HOME." >&2
+  exit 1
+}
+
+BOLD=$'\e[1m'; DIM=$'\e[2m'; GREEN=$'\e[32m'; YELLOW=$'\e[33m'
+RED=$'\e[31m'; CYAN=$'\e[36m'; RESET=$'\e[0m'
+
+# </dev/null est indispensable : powershell.exe, lance en cascade par le moteur,
+# lit l'entree standard et volerait les reponses saisies dans le menu.
+engine() { "$ENGINE" "$@" </dev/null 2>&1; }
+
+# Traduit "2h", "90m", "1h30", "45", "3600s" en secondes. 45 seul = 45 minutes.
+parse_duration() {
+  local input="${1,,}"
+  local seconds=0 matched=0 value
+
+  input="${input// /}"
+  [[ -n "$input" ]] || return 1
+
+  if [[ "$input" =~ ^([0-9]+)h([0-9]+)$ ]]; then
+    printf '%s' $(( BASH_REMATCH[1] * 3600 + BASH_REMATCH[2] * 60 ))
+    return 0
+  fi
+  if [[ "$input" =~ ^[0-9]+$ ]]; then
+    printf '%s' $(( input * 60 ))
+    return 0
+  fi
+
+  while [[ -n "$input" ]]; do
+    if [[ "$input" =~ ^([0-9]+)([hms]) ]]; then
+      value="${BASH_REMATCH[1]}"
+      case "${BASH_REMATCH[2]}" in
+        h) seconds=$(( seconds + value * 3600 )) ;;
+        m) seconds=$(( seconds + value * 60 )) ;;
+        s) seconds=$(( seconds + value )) ;;
+      esac
+      input="${input#"${BASH_REMATCH[0]}"}"
+      matched=1
+    else
+      return 1
+    fi
+  done
+
+  (( matched )) || return 1
+  printf '%s' "$seconds"
+}
+
+human_duration() {
+  local total="$1" h m
+  h=$(( total / 3600 )); m=$(( (total % 3600) / 60 ))
+  if (( h && m )); then printf '%dh%02d' "$h" "$m"
+  elif (( h )); then printf '%dh' "$h"
+  else printf '%d min' "$m"; fi
+}
+
+show_status() {
+  local output status expires remaining now
+
+  output=$(engine status)
+  status=$(awk -F= '/^STATUS=/ { print $2; exit }' <<<"$output")
+
+  case "$status" in
+    running)
+      if grep -q '^MODE=pid' <<<"$output"; then
+        printf '  %s● ACTIF%s   tant que le PID %s%s%s tourne\n' \
+          "$GREEN" "$RESET" "$BOLD" \
+          "$(awk -F= '/^UNTIL_PID=/ { print $2; exit }' <<<"$output")" "$RESET"
+      else
+        expires=$(awk -F= '/^EXPIRES=/ { sub(/^[^=]*=/, ""); print; exit }' <<<"$output")
+        now=$(date +%s)
+        remaining=$(( $(date -d "$expires" +%s 2>/dev/null || echo "$now") - now ))
+        printf '  %s● ACTIF%s   encore %s%s%s, jusqu%s %s\n' \
+          "$GREEN" "$RESET" "$BOLD" "$(human_duration $(( remaining > 0 ? remaining : 0 )))" \
+          "$RESET" "'" "${expires%:* *}"
+      fi
+      ;;
+    expired)
+      printf '  %s○ EXPIRE%s  la protection est terminee\n' "$YELLOW" "$RESET" ;;
+    stopped)
+      printf '  %s○ INACTIF%s la machine peut se mettre en veille\n' "$DIM" "$RESET" ;;
+    *)
+      printf '  %s● PROBLEME%s\n%s\n' "$RED" "$RESET" "$output" ;;
+  esac
+}
+
+start_for() {
+  local seconds="$1" out
+
+  engine stop >/dev/null 2>&1
+  printf '\n  Demarrage pour %s...\n' "$(human_duration "$seconds")"
+  out=$(engine start "$seconds")
+  if grep -q '^STATUS=running' <<<"$out"; then
+    printf '  %s✓ Protection active%s jusqu%s %s\n' "$GREEN" "$RESET" "'" \
+      "$(awk -F= '/^EXPIRES=/ { sub(/^[^=]*=/, ""); print; exit }' <<<"$out")"
+  else
+    printf '  %s✗ Echec :%s\n%s\n' "$RED" "$RESET" "$out"
+  fi
+}
+
+start_until_pid() {
+  local pid="$1" out
+
+  if ! kill -0 "$pid" 2>/dev/null; then
+    printf '  %s✗ Le PID %s ne tourne pas.%s\n' "$RED" "$pid" "$RESET"
+    return
+  fi
+  engine stop >/dev/null 2>&1
+  out=$(engine start-pid "$pid")
+  if grep -q '^STATUS=running' <<<"$out"; then
+    printf '  %s✓ Protection active%s tant que le PID %s tourne\n' "$GREEN" "$RESET" "$pid"
+  else
+    printf '  %s✗ Echec :%s\n%s\n' "$RED" "$RESET" "$out"
+  fi
+}
+
+ask_custom() {
+  local answer seconds
+
+  read -rp "  Duree (ex: 90m, 2h, 1h30, 45) : " answer
+  if seconds=$(parse_duration "$answer"); then
+    if (( seconds < 60 )); then
+      printf '  %s✗ Minimum une minute.%s\n' "$RED" "$RESET"
+    else
+      start_for "$seconds"
+    fi
+  else
+    printf '  %s✗ Format non compris.%s\n' "$RED" "$RESET"
+  fi
+}
+
+ask_pid() {
+  local answer
+
+  printf '  %sProcessus WSL en cours :%s\n' "$DIM" "$RESET"
+  ps -u "$USER" -o pid=,etime=,comm= --sort=-etime | head -8 | sed 's/^/    /'
+  read -rp "  PID a surveiller : " answer
+  [[ "$answer" =~ ^[0-9]+$ ]] && start_until_pid "$answer" ||
+    printf '  %s✗ PID invalide.%s\n' "$RED" "$RESET"
+}
+
+menu() {
+  local choice
+
+  while true; do
+    printf '\n%s┌─ Anti-veille Windows ─────────────────%s\n' "$BOLD" "$RESET"
+    show_status
+    printf '%s└───────────────────────────────────────%s\n\n' "$BOLD" "$RESET"
+    printf '  %s1%s) 30 minutes      %s4%s) 4 heures\n' "$CYAN" "$RESET" "$CYAN" "$RESET"
+    printf '  %s2%s) 1 heure         %s5%s) 8 heures (nuit)\n' "$CYAN" "$RESET" "$CYAN" "$RESET"
+    printf '  %s3%s) 2 heures        %s6%s) duree libre\n' "$CYAN" "$RESET" "$CYAN" "$RESET"
+    printf '\n  %sp%s) jusqu%s la fin d%sun processus\n' "$CYAN" "$RESET" "'" "'"
+    printf '  %ss%s) arreter la protection\n' "$CYAN" "$RESET"
+    printf '  %sq%s) quitter %s(la protection continue en arriere-plan)%s\n\n' \
+      "$CYAN" "$RESET" "$DIM" "$RESET"
+
+    read -rp "  Choix : " choice
+    case "$choice" in
+      1) start_for 1800 ;;
+      2) start_for 3600 ;;
+      3) start_for 7200 ;;
+      4) start_for 14400 ;;
+      5) start_for 28800 ;;
+      6) ask_custom ;;
+      p|P) ask_pid ;;
+      s|S) printf '\n'; engine stop | sed 's/^/  /' ;;
+      q|Q|"") printf '\n'; exit 0 ;;
+      *) printf '  %s✗ Choix inconnu.%s\n' "$RED" "$RESET" ;;
+    esac
+  done
+}
+
+# Usage direct sans menu : awake 2h | awake stop | awake status | awake probe ...
+case "${1:-}" in
+  "")       menu ;;
+  stop)     engine stop ;;
+  status)   show_status ;;
+  probe)    shift; exec "$PROBE" "${@:-report}" ;;
+  -h|--help|help)
+    cat <<'EOF'
+Usage:
+  awake              menu interactif
+  awake 2h           demarre directement (2h, 90m, 1h30, 45 = minutes)
+  awake pid 12345    reste eveille tant que ce PID WSL tourne
+  awake status       etat courant
+  awake stop         arrete la protection
+  awake probe start|report|stop    mesure les gels de processus
+EOF
+    ;;
+  pid)
+    [[ "${2:-}" =~ ^[0-9]+$ ]] && start_until_pid "$2" ||
+      { echo "PID invalide" >&2; exit 2; }
+    ;;
+  *)
+    if seconds=$(parse_duration "$1"); then
+      (( seconds >= 60 )) && start_for "$seconds" ||
+        { echo "Minimum une minute" >&2; exit 2; }
+    else
+      echo "Duree non comprise : $1 (essayez 2h, 90m, 1h30)" >&2
+      exit 2
+    fi
+    ;;
+esac

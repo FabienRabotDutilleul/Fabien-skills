@@ -13,13 +13,42 @@ chacun de ses skills.
 | [`kb/`](kb/) | Faire entrer du savoir dans une base lisible par agent | 10 |
 | [`research/`](research/) | Déléguer le travail de lecture | 3 |
 | [`agent-ops/`](agent-ops/) | Configurer et cadrer les agents eux-mêmes | 6 |
-| [`windows-tools/`](windows-tools/) | Franchir la frontière WSL → Windows | 1 |
+| [`windows&bash-tools/`](windows&bash-tools/) | Franchir la frontière WSL → Windows | 1 + scripts |
 
-## Par où commencer
+---
 
-- **Machine neuve** → `agent-ops/global-agent-guardrails`, avant tout le reste.
-- **Tu ne sais pas quel skill prendre** → `agent-ops/ask-matt` est un routeur sur la collection.
-- **Tu veux en écrire un** → `agent-ops/writing-great-skills`.
+# 🚦 Par où commencer
+
+## 🛑 Étape 0 — obligatoire chez Rabot Dutilleul
+
+> [!IMPORTANT]
+> ### `agent-ops/global-agent-guardrails` s'installe **à la première utilisation**, avant tout le reste.
+>
+> Ce n'est pas une recommandation : chez Rabot Dutilleul, **aucun agent ne tourne sur une
+> machine qui n'a pas le garde-fou installé.**
+>
+> Il pose une denylist unique de commandes shell catastrophiques — `rm -rf` sur `/` ou `~`,
+> `dd`/`mkfs`, `sudo rm`, fork bombs, `curl | sh`, `git push --force`, `gh repo delete` — en
+> hook PreToolUse / pre-exec sur **tous** les agents de la machine, pas seulement Claude Code.
+>
+> ```bash
+> ln -s ~/dev/claude-skills/agent-ops/global-agent-guardrails ~/.claude/skills/global-agent-guardrails
+> ```
+>
+> Puis demande à l'agent : *« installe global-agent-guardrails »*. Il fait le reste.
+>
+> ⏱️ Deux minutes. À faire **une seule fois par machine**, jamais par projet.
+
+## ✅ Ensuite, selon ton besoin
+
+| Tu veux… | Va voir |
+|---|---|
+| 🧭 **savoir quel skill prendre** | `agent-ops/ask-matt` — un routeur sur toute la collection |
+| ✍️ **en écrire un** | `agent-ops/writing-great-skills` — le vocabulaire et les principes |
+| 🏗️ **bosser sur du code** | `agent-ops/setup-matt-pocock-skills` d'abord, une fois par dépôt |
+| 😴 **qu'un run long ne soit pas coupé** | `windows&bash-tools/` |
+
+---
 
 ## Installation
 
