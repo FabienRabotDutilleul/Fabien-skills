@@ -10,6 +10,8 @@ Deux formes du même besoin, à choisir selon qui pilote :
 | [`anti-sleep/`](anti-sleep/) | **l'agent** | Le skill. Claude empêche la machine de dormir tout seul, quand il en a besoin. |
 | [`awake/`](awake/) | **toi** | Les scripts. Une commande `awake` en ligne de commande, indépendante de tout agent. |
 
+
+### NOTE: Clairement, utiliser le script à chaque fois, pas besoin de gacher du token.
 ---
 
 ## `anti-sleep/` — le skill
