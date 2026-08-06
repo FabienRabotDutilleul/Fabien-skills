@@ -7,10 +7,10 @@ projet donné.
 |---|---|
 | `global-agent-guardrails` | **Le garde-fou.** Une denylist unique de commandes shell catastrophiques (`rm -rf` sur `/` ou `~`, `dd`/`mkfs`, `sudo rm`, fork bombs, `curl \| sh`, `git push --force`, `gh repo delete`) appliquée en hook PreToolUse / pre-exec sur *tous* les agents de la machine — Cursor, Claude Code, Codex, OpenCode, Pi, Hermes, Grok, Droid, Devin. À installer en premier sur une machine neuve. |
 | `goal-loop` | Explique et rédige les instructions pour `/goal`, la boucle auto-vérifiante (plan → agis → teste → relis → itère). À prendre pour lancer un run autonome long ou pour faire écrire un bon prompt de goal. |
-| `writing-great-skills` | La référence pour écrire et éditer des skills : le vocabulaire et les principes qui rendent un skill prévisible. **À lire avant d'ajouter quoi que ce soit à ce dépôt.** |
+| `writing-for-agents` | La référence pour écrire tout document que lit un agent — un skill, un `AGENTS.md`/`CLAUDE.md`, une doc atteinte par un pointeur : le vocabulaire et les principes qui les rendent prévisibles. Sa mécanique propre aux skills (frontmatter, invocation, skills routeurs) est dans [`SKILL-MECHANICS.md`](writing-for-agents/SKILL-MECHANICS.md). **À lire avant d'ajouter quoi que ce soit à ce dépôt.** Seul skill du dossier invocable par l'agent lui-même. |
 | `setup-help` | Guide pas à pas n'importe quelle installation. Sa particularité : une seule étape à la fois, suivie systématiquement de la liste de toutes les étapes restantes. |
 | `setup-matt-pocock-skills` | Configure un dépôt pour accueillir les skills d'`engineering/` : tracker d'issues, vocabulaire de labels de triage, layout des docs de domaine. À lancer une fois, avant le premier usage des autres. |
-| `ask-matt` | Le routeur : décrit ta situation, il te dit quel skill ou quel enchaînement prendre. Le point d'entrée quand tu ne sais pas par où commencer. |
+| `ask-me` | Le routeur : décris ta situation, il te dit quel skill ou quel enchaînement prendre — sur toute la collection (engineering, recherche, kb, productivité, outils machine). Le point d'entrée quand tu ne sais pas par où commencer. Il embarque [`PHASE-BOUNDARIES.md`](ask-me/PHASE-BOUNDARIES.md) : l'arbre de décision entre `continue`, `/clear`, `/handoff`, sous-agent et `/compact` à la frontière entre deux phases. |
 
 ## Ordre d'installation
 
@@ -26,5 +26,5 @@ projet donné.
 
 ## Attribution
 
-`ask-matt`, `setup-matt-pocock-skills` et `writing-great-skills` viennent du set de skills de
-**Matt Pocock**.
+`setup-matt-pocock-skills` et `writing-for-agents` viennent du set de skills de
+**Matt Pocock**. `ask-me` en dérive (ex-`ask-matt`), généralisé pour router sur toute la collection.

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Wait, What"
+  short_description: "Re-pitch a message that didn't land"
+policy:
+  allow_implicit_invocation: false

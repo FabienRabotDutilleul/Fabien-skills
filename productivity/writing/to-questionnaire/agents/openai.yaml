@@ -1,0 +1,5 @@
+interface:
+  display_name: "To Questionnaire"
+  short_description: "Turn a blocked decision into a questionnaire"
+policy:
+  allow_implicit_invocation: false

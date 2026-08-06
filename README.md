@@ -1,6 +1,6 @@
 # Fabien-skills
 
-Ma collection de skills pour Claude Code — 46 skills rangés par usage plutôt que par ordre
+Ma collection de skills pour Claude Code : 48 skills rangés par usage plutôt que par ordre
 d'arrivée. Chaque dossier principal porte son propre README qui explique brièvement ce que fait
 chacun de ses skills.
 
@@ -29,13 +29,13 @@ chacun de ses skills.
 >
 > Il pose une denylist unique de commandes shell catastrophiques — `rm -rf` sur `/` ou `~`,
 > `dd`/`mkfs`, `sudo rm`, fork bombs, `curl | sh`, `git push --force`, `gh repo delete` — en
-> hook PreToolUse / pre-exec sur **tous** les agents de la machine, pas seulement Claude Code.
+> hook PreToolUse / pre-exec sur **tous** les agents de la machine, pas seulement Claude Code. Execute:
 >
 > ```bash
-> ln -s ~/dev/Fabien-skills/agent-ops/global-agent-guardrails ~/.claude/skills/global-agent-guardrails
+> /global-agent-guardrails
 > ```
 >
-> Puis demande à l'agent : *« installe global-agent-guardrails »*. Il fait le reste.
+> Ou demande à l'agent : *« installe global-agent-guardrails »*. Il fait le reste.
 >
 > ⏱️ Deux minutes. À faire **une seule fois par machine**, jamais par projet.
 
@@ -43,10 +43,10 @@ chacun de ses skills.
 
 | Tu veux… | Va voir |
 |---|---|
-| 🧭 **savoir quel skill prendre** | `agent-ops/ask-matt` — un routeur sur toute la collection |
-| ✍️ **en écrire un** | `agent-ops/writing-great-skills` — le vocabulaire et les principes |
+| 🧭 **savoir quel skill prendre** | `agent-ops/ask-me` — un routeur sur toute la collection |
+| ✍️ **en écrire un** | `agent-ops/writing-for-agents` — le vocabulaire et les principes |
 | 🏗️ **bosser sur du code** | `agent-ops/setup-matt-pocock-skills` d'abord, une fois par dépôt |
-| 😴 **qu'un run long ne soit pas coupé** | `windows&bash-tools/` |
+| 😴 **qu'un run long ne soit pas coupé par un veille de Windows** | `windows&bash-tools/` |
 
 ---
 
@@ -79,13 +79,15 @@ Deux skills demandent une lecture préalable :
 - **`kb/youtube/channel-to-kb-supadata`** — s'appuie sur une API managée payante ; les deux
   autres variantes `channel-to-kb*` font la même chose gratuitement.
 
+Ces skills n'existent que parce que certaines informations de veille sur le dev et l'IA se trouvent d'abord sur Youtube, hors on a pas toujours le temps de regarder une conférence de 2h, ces skills résolvent ce problème.
+
 ## Attribution
 
 Cette collection agrège du travail qui n'est pas tout de moi :
 
 | Origine | Skills |
 |---|---|
-| [Matt Pocock](https://github.com/mattpocock) | l'essentiel d'`engineering/`, plus `ask-matt`, `setup-matt-pocock-skills`, `writing-great-skills`, la famille `grill*` |
+| [Matt Pocock](https://github.com/mattpocock) | l'essentiel d'`engineering/`, plus `setup-matt-pocock-skills`, `writing-for-agents`, `to-questionnaire`, `wait-what`, la famille `grill*`, et `ask-me` (dérivé de son `ask-matt`) |
 | [Cole Medin](https://github.com/coleam00) | les trois `channel-to-kb*` |
 | [bradautomates](https://github.com/bradautomates/claude-video) — MIT | `watch` |
 
@@ -95,6 +97,16 @@ que tu préfères un lien à une copie, ouvre une issue — je bascule sans disc
 ## Contexte métier
 
 Quelques skills portent encore du contexte spécifique à mes projets et ne s'utiliseront pas
-tels quels ailleurs : `grill-encadrement`, `quiz`, `classify_output`,
+tels quels ailleurs : `quiz`, `classify_output`,
 `inject_into_knowledge_base`. Ils restent publiés parce que la mécanique est réutilisable même
 si le domaine ne l'est pas.
+
+## Continuer de votre côté :
+
+
+ - Les skills sont les nouvelles fonctionnalités des applications de nos jours. Il est fortement conseillé de tester et de créer vos skills vous-même en fonction de vos tâches répétitives quotidiennes ou de processus complexes pouvant quand même être automatisés. Conseils de ma part :
+
+ - Toute tâche automatisable, que vous faites vous-même plusieurs fois par jour, doit devenir un skill.
+ Écrire ses propres skills est une qualité de développeur unique et fortement conseillée. Les skills écrits à la main sont souvent plus efficaces. 
+ 
+ - Si vous demandez à un agent de vous créer un skill, utilisez toujours writing-for-agents afin de bénéficier du meilleur format.
