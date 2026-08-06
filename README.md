@@ -72,7 +72,7 @@ c'est signalé dans le README du dossier concerné.
 
 ## Avant d'installer
 
-Deux skills demandent une lecture préalable :
+### Ceux qui coûtent de l'argent
 
 - **`kb/youtube/watch`** — coûte de l'argent (clé API Whisper) et beaucoup de tokens. Il a son
   [propre README](kb/youtube/watch/README.md) avec l'avertissement détaillé.
@@ -80,6 +80,25 @@ Deux skills demandent une lecture préalable :
   autres variantes `channel-to-kb*` font la même chose gratuitement.
 
 Ces skills n'existent que parce que certaines informations de veille sur le dev et l'IA se trouvent d'abord sur Youtube, hors on a pas toujours le temps de regarder une conférence de 2h, ces skills résolvent ce problème.
+
+### Ceux qui se lancent en sandbox
+
+> [!WARNING]
+> **Les trois skills de [`research/`](research/) lisent du contenu web arbitraire et le
+> ramènent dans le contexte de l'agent. C'est un vecteur de prompt injection.**
+>
+> Une page, un post ou un commentaire peut contenir des instructions déguisées que l'agent
+> exécutera comme si elles venaient de toi. Ces skills se lancent **dans une sandbox** — dépôt
+> jetable ou conteneur, sans credentials, sans accès au reste de ta machine — et jamais sur un
+> projet qui contient des secrets.
+
+- **`research/research`** — enquête sur des sources primaires et écrit le résultat dans le
+  dépôt. Le plus sobre, mais il lit quand même du web non fiable.
+- **`research/storm-research`** — quatre phases, cinq lentilles d'experts, peer review
+  adversarial. Beaucoup de pages lues, donc beaucoup de surface d'injection.
+- **`research/last30days`** — le plus exposé : il moissonne Reddit, X, YouTube, TikTok, Hacker
+  News et GitHub, c'est-à-dire du texte écrit par n'importe qui. À ne jamais lancer hors bac à
+  sable.
 
 ## Attribution
 
