@@ -10,8 +10,6 @@ npx add-fabien-skills
 Un picker s'ouvre : tu choisis les skills, où les poser, si l'agent a le droit de les déclencher
 tout seul. Rien d'autre à installer.
 
-![picker](#)
-
 ## En entreprise : épingler la version
 
 `npx add-fabien-skills` résout `@latest`, c'est-à-dire *ce que le propriétaire du paquet a
@@ -26,12 +24,16 @@ le tarball et le commit exact qui l'a produit. Pour le contrôler avant de faire
 ce soit :
 
 ```bash
-npm view add-fabien-skills   # la mention "Provenance" pointe le commit et le workflow
+npm view add-fabien-skills          # la mention "Provenance" pointe le commit et le workflow
+npm audit signatures                # vérifie signature + attestation d'un arbre installé
 ```
 
 Publier n'est possible que depuis un tag de ce dépôt, via
-[`publish.yml`](../.github/workflows/publish.yml) — un token npm volé ne suffit donc pas à
-diffuser un paquet qui prétendrait venir d'ici.
+[`publish.yml`](https://github.com/FabienRabotDutilleul/Fabien-skills/blob/main/.github/workflows/publish.yml),
+et npm l'applique lui-même : le paquet est configuré en **trusted publishing** (OIDC). Il n'existe
+aucun token de publication — ni dans ce dépôt, ni ailleurs. npm ne délivre un droit d'écriture
+qu'à un job dont l'identité correspond à ce dépôt, ce fichier de workflow et cet environnement.
+Il n'y a donc pas de secret à voler.
 
 ## Non interactif
 
@@ -69,8 +71,10 @@ correctif n'est pas le même.
 
 ## Comment ça marche
 
-Le CLI ne clone jamais. Il lit [`skills.json`](../skills.json) à la racine du dépôt — une seule
-requête de ~12 Ko gzippés — puis télécharge uniquement les fichiers des skills choisis.
+Le CLI ne clone jamais. Il lit
+[`skills.json`](https://github.com/FabienRabotDutilleul/Fabien-skills/blob/main/skills.json) à la
+racine du dépôt — une seule requête de ~12 Ko gzippés — puis télécharge uniquement les fichiers
+des skills choisis.
 
 C'est délibéré : le tarball du dépôt pèse ~16 Mo, presque entièrement les médias d'un seul skill
 (`research/last30days/assets`). Cloner pour installer un skill de 7 Ko serait la façon la plus
@@ -88,7 +92,7 @@ l'utilisateur subit avant de voir le premier pixel.
 
 ```bash
 npm install          # `yaml`, uniquement pour générer l'index
-npm test             # 13 tests, runner natif de Node
+npm test             # runner natif de Node, aucune dépendance de test
 npm start            # lance le CLI sur le dépôt local
 npm run index        # régénère ../skills.json
 npm run index:check  # échoue si l'index est périmé
@@ -98,3 +102,22 @@ npm run index:check  # échoue si l'index est périmé
 sinon `npx add-fabien-skills` ne le voit pas. Le générateur refuse d'écrire si un `SKILL.md` a un
 frontmatter invalide, si `name:` ne correspond pas au nom du dossier, ou si deux skills partagent
 un nom : ce sont exactement les cas où l'installation écraserait la mauvaise cible.
+
+## Publier une version
+
+```bash
+cd cli
+npm version patch     # ou minor / major — bumpe, commit et pose le tag vX.Y.Z
+git push --follow-tags
+```
+
+Le tag déclenche [`publish.yml`](https://github.com/FabienRabotDutilleul/Fabien-skills/blob/main/.github/workflows/publish.yml),
+qui rejoue les tests, `index:check` et `publint` avant de publier. `npm version` pose lui-même le
+tag à partir de `package.json`, ce qui rend le désaccord tag/version structurellement impossible
+plutôt que simplement vérifié.
+
+Une version de préversion (`npm version prerelease --preid beta`) part automatiquement sous le
+dist-tag `next` : `npx add-fabien-skills` résout `latest` et ne doit jamais tomber sur une beta.
+
+Le tag `v*` est global au dépôt alors que la version est locale à `cli/`. Le jour où un second
+paquet publiable apparaît ici, il faudra passer à `cli-v*`.

@@ -1,21 +1,30 @@
 name: publish
 
 # Publishing happens only from a tag, only from this repo, and only through this
-# workflow. That is what makes the provenance attestation meaningful: it ties the
-# tarball on npm to an exact commit and an exact workflow run, so a stolen token
-# alone is not enough to ship something that claims to come from here.
+# workflow — enforced by npm itself, not just by convention.
+#
+# There is no NPM_TOKEN. npm mints a short-lived credential from this job's OIDC
+# identity ("trusted publishing"), and only accepts it if the repo, the workflow
+# filename and the environment all match what is registered on npmjs.com. A secret
+# stolen from this repo therefore does not exist to be stolen, and a token stolen
+# anywhere else cannot publish here.
+#
+# Bootstrap: npm refuses to configure a trusted publisher for a package that does
+# not exist yet, so 0.1.0 has to be pushed once by hand (`npm login && npm publish
+# --access public` from cli/). Every release after that goes through here.
 on:
   push:
     tags: ["v*"]
-  workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write # required for provenance
+  id-token: write # lets npm verify who is publishing, without a stored token
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Must match the "Environment" field of the trusted publisher on npmjs.com.
+    # A mismatch fails as an opaque 404, so change the two together or not at all.
     environment: npm
     steps:
       - uses: actions/checkout@v4
@@ -25,30 +34,49 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
+      # setup-node pins npm 10.x, which predates OIDC publishing entirely. Major
+      # version pinned rather than @latest: a release is the worst moment to
+      # discover that the toolchain moved under you.
+      - run: npm install -g npm@12
+      - run: npm --version
+
       - run: npm ci
         working-directory: cli
 
       - run: npm test
         working-directory: cli
 
-      # Never publish an index that disagrees with the tree it claims to describe.
+      # Never publish an index that disagrees with the tree it claims to describe:
+      # a stale entry is a 404 for every user who installs that skill.
       - run: npm run index:check
         working-directory: cli
 
       - run: npx --yes publint
         working-directory: cli
 
-      - name: Check the tag matches the version
+      - name: Resolve the release from the tag
+        id: release
         working-directory: cli
         run: |
+          set -euo pipefail
           tag="${GITHUB_REF_NAME#v}"
           version="$(node -p "require('./package.json').version")"
           if [ "$tag" != "$version" ]; then
-            echo "tag $GITHUB_REF_NAME != package.json version $version" >&2
+            echo "::error::tag $GITHUB_REF_NAME does not match package.json version $version" >&2
             exit 1
           fi
+          # npm 11+ refuses to publish a prerelease without an explicit dist-tag,
+          # and `latest` is what `npx add-fabien-skills` resolves — so a beta must
+          # never land on it.
+          case "$version" in
+            *-*) dist_tag=next ;;
+            *)   dist_tag=latest ;;
+          esac
+          echo "dist_tag=$dist_tag" >> "$GITHUB_OUTPUT"
+          echo "Publishing $version under the '$dist_tag' tag"
 
-      - run: npm publish --provenance --access public
+      # --provenance is documented as implicit under trusted publishing, but it has
+      # been reported not to fire; stating it costs nothing and it is the part users
+      # can actually verify (`npm view add-fabien-skills`).
+      - run: npm publish --provenance --access public --tag "${{ steps.release.outputs.dist_tag }}"
         working-directory: cli
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
