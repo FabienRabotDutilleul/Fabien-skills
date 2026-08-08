@@ -17,7 +17,7 @@
   "scripts": {
     "index": "node scripts/build-index.mjs",
     "index:check": "node scripts/build-index.mjs --check",
-    "test": "node --test 'test/*.test.mjs'",
+    "test": "node --test",
     "start": "node bin/add-fabien-skills.mjs --source .."
   },
   "keywords": [
