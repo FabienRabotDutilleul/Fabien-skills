@@ -6,3 +6,4 @@ venv/
 .env
 tmp_output/
 .DS_Store
+*:Zone.Identifier
