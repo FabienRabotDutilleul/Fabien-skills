@@ -1,0 +1,54 @@
+name: publish
+
+# Publishing happens only from a tag, only from this repo, and only through this
+# workflow. That is what makes the provenance attestation meaningful: it ties the
+# tarball on npm to an exact commit and an exact workflow run, so a stolen token
+# alone is not enough to ship something that claims to come from here.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - run: npm ci
+        working-directory: cli
+
+      - run: npm test
+        working-directory: cli
+
+      # Never publish an index that disagrees with the tree it claims to describe.
+      - run: npm run index:check
+        working-directory: cli
+
+      - run: npx --yes publint
+        working-directory: cli
+
+      - name: Check the tag matches the version
+        working-directory: cli
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$version" ]; then
+            echo "tag $GITHUB_REF_NAME != package.json version $version" >&2
+            exit 1
+          fi
+
+      - run: npm publish --provenance --access public
+        working-directory: cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

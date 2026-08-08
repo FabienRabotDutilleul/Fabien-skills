@@ -12,6 +12,27 @@ tout seul. Rien d'autre à installer.
 
 ![picker](#)
 
+## En entreprise : épingler la version
+
+`npx add-fabien-skills` résout `@latest`, c'est-à-dire *ce que le propriétaire du paquet a
+publié il y a cinq minutes*. Pour une diffusion interne, épingle :
+
+```bash
+npx add-fabien-skills@0.1.0
+```
+
+Le paquet est publié avec une **attestation de provenance** : npm garde un lien vérifiable entre
+le tarball et le commit exact qui l'a produit. Pour le contrôler avant de faire tourner quoi que
+ce soit :
+
+```bash
+npm view add-fabien-skills   # la mention "Provenance" pointe le commit et le workflow
+```
+
+Publier n'est possible que depuis un tag de ce dépôt, via
+[`publish.yml`](../.github/workflows/publish.yml) — un token npm volé ne suffit donc pas à
+diffuser un paquet qui prétendrait venir d'ici.
+
 ## Non interactif
 
 ```bash

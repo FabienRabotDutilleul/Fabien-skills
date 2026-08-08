@@ -1,0 +1,11 @@
+# A skill is not data: it is instructions an agent executes with its tools. Anything
+# merged here ships to every machine that runs `npx add-fabien-skills`, so every
+# skill and every part of the installer needs an explicit review.
+
+*                       @FabienRabotDutilleul
+
+# Spelled out so these stay covered even if the catch-all above is ever narrowed.
+**/SKILL.md             @FabienRabotDutilleul
+/cli/                   @FabienRabotDutilleul
+/skills.json            @FabienRabotDutilleul
+/.github/               @FabienRabotDutilleul

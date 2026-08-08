@@ -35,6 +35,9 @@
     "directory": "cli"
   },
   "homepage": "https://github.com/FabienRabotDutilleul/Fabien-skills#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "yaml": "^2.5.0"
   }

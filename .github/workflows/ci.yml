@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  cli:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["20", "22", "24"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: npm ci
+        working-directory: cli
+
+      - run: npm test
+        working-directory: cli
+
+      # A skill added without regenerating the index is invisible to the CLI, and
+      # an index that disagrees with the tree is how someone ships a file nobody
+      # reviewed. Both are caught here.
+      - run: npm run index:check
+        working-directory: cli
+
+      # Guards the publish path itself: a broken bin or a bad `files` field only
+      # shows up once it is on npm, which is too late.
+      - run: npx --yes publint
+        working-directory: cli
