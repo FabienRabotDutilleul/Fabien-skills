@@ -13,6 +13,7 @@ Les skills qui touchent au code : le concevoir, l'écrire, le relire, le découp
 | `implement` | Implémente un morceau de travail à partir d'une spec ou d'un jeu de tickets. |
 | `improve-codebase-architecture` | Scanne une base de code à la recherche d'opportunités d'approfondissement, les présente en rapport HTML, puis grille celle que tu choisis. |
 | `prototype` | Monte un prototype jetable pour trancher une question de design — un modèle d'état tient-il debout, à quoi doit ressembler cet écran. |
+| `setup-matt-pocock-skills` | **Le prérequis.** Configure un dépôt pour accueillir les autres : tracker d'issues, vocabulaire de labels de triage, layout des docs de domaine. Une fois par dépôt, avant le premier usage de `triage`, `to-tickets`, `to-spec`, `wayfinder` et `code-review` — les cinq qui le citent nommément. |
 | `qa` | Session QA conversationnelle : tu signales les bugs à l'oral, l'agent explore la base en fond pour le contexte et dépose les issues GitHub. |
 | `tdd` | Red-green-refactor. Pour construire une feature ou corriger un bug en partant du test. |
 | `to-spec` | Transforme la conversation en cours en spec publiée sur le tracker. Pas d'interview, juste la synthèse de ce qui a déjà été dit. |
@@ -23,7 +24,6 @@ Les skills qui touchent au code : le concevoir, l'écrire, le relire, le découp
 ## Attribution
 
 `code-review`, `codebase-design`, `diagnosing-bugs`, `domain-modeling`, `implement`,
-`prototype`, `qa`, `tdd`, `to-spec`, `to-tickets`, `triage`, `wayfinder` et
-`improve-codebase-architecture` viennent du set de skills de **Matt Pocock**. Voir
-`agent-ops/setup-matt-pocock-skills`, qui configure un dépôt pour les accueillir (tracker,
-vocabulaire de labels, layout des docs de domaine) — à lancer une fois avant le premier usage.
+`prototype`, `qa`, `tdd`, `to-spec`, `to-tickets`, `triage`, `wayfinder`,
+`improve-codebase-architecture` et `setup-matt-pocock-skills` viennent du set de skills de
+**Matt Pocock**.

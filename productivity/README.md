@@ -36,9 +36,43 @@ par écrit, la dessiner, l'apprendre — et la faire passer, à un agent comme �
 | `teach` | Enseigne un concept ou une compétence en s'appuyant sur le workspace courant. |
 | `quiz` | Séance de quiz adaptatif (QCM + questions ouvertes) sur un corpus de documents, pour vérifier ce qui est réellement acquis. |
 
+## `setup/` — franchir une procédure
+
+Deux réponses au même problème — te faire avancer dans des étapes que toi seul peux faire —
+par deux moyens opposés.
+
+| Skill | Ce qu'il fait |
+|---|---|
+| `setup-help` | Te guide **en conversation** : une seule étape à la fois, suivie systématiquement de la liste de tout ce qui reste (8 lignes max, quitte à regrouper la suite en phases). Rien n'est écrit sur le disque. |
+| `wizard` | **Écrit le script bash** qui te guidera : il ouvre chaque URL, dit quoi cliquer, saisit les secrets en masqué, les pose dans `.env` ou en secret GitHub, et confirme avant chaque action irréversible. |
+
+Le critère : si la procédure est jouée une fois, `setup-help` suffit. Si elle doit être rejouée —
+un autre poste, un autre dépôt, un collègue — `wizard` produit l'artefact qui la porte.
+
 ## Notes
 
 - `grilling`, `grill-me`, `grill-with-docs` et `prototype` forment une même famille : commence
   par `grilling` si tu ne sais pas lequel prendre.
 - `excalidraw-diagram` a besoin d'un environnement Python (`references/pyproject.toml`) pour le
   rendu ; il n'est pas versionné, monte-le avec `uv sync` dans `references/`.
+
+### `brain-to-docs` ou `grill-with-docs` ?
+
+Les deux sont des boucles de questions/réponses qui produisent des docs. Tout le reste s'oppose.
+
+| | `brain-to-docs` | `grill-with-docs` |
+|---|---|---|
+| Rôle de l'agent | **greffier** — il ne conteste pas ta pensée | **contradicteur** — il interroge sans relâche |
+| Ce que tu as au départ | une tête pleine, rien d'écrit | un plan déjà formé |
+| Le risque traité | ça reste dans ta tête | il y a un trou dedans |
+| Forme des questions | 5 angles variés, tu réponds à celles que tu veux | toute la frontière, tu réponds à tout, chacune avec sa réponse recommandée |
+| Ordre | aucun, exploratoire | arbre de décision, ordre de dépendances |
+| Produit | `README.md` (vision) + `docs/adr/` | ADR + glossaire (langage ubiquitaire) |
+
+Le détail qui change l'usage : `grilling` met sa réponse recommandée sous chaque question. Si ton
+plan est globalement bon, « ok pour tout sauf Q3 » règle une ronde entière en dix secondes.
+`brain-to-docs` ne peut pas faire ça — il n'a rien à recommander, c'est ton avis qu'il vient
+chercher.
+
+**Rien d'écrit → `brain-to-docs`. Quelque chose de décidé que tu veux voir résister →
+`grill-with-docs`**

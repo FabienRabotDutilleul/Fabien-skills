@@ -126,11 +126,17 @@ Getting what's in your head, or in the thread, onto durable paper.
 
 Keeping the tooling itself in shape.
 
-- **`/setup-help`** — walk through setting *anything* up, one step at a time, with the remaining steps listed after each response.
 - **`/goal-loop`** — write effective instructions for a long-running autonomous `/goal` run (plan → act → test → review → iterate). Reach for it before kicking one off.
 - **`/global-agent-guardrails`** — the shared denylist of catastrophic shell commands enforced across every coding agent on the machine. Use it to add patterns, wire in a new agent, or debug why a command was blocked.
 - **`/anti-sleep`** — keep the machine awake (Windows from WSL) for a duration or while a process runs; survives agent-shell cleanup, unlike a plain background job. There is a script that is available and advised to used over anti-sleep.
 - **`/writing-for-agents`** — reference for writing documents agents consume: skills, `AGENTS.md`, pointed-at docs. Including this one. Model-invoked, so the agent pulls it in by itself the moment you edit a skill.
+
+## Getting through a procedure
+
+Steps only you can carry out — a dashboard to click, a credential to create. Two ways through, differing in what's left behind.
+
+- **`/setup-help`** — the agent walks you through it in conversation: one step at a time, with every remaining step listed after each response. Nothing is written to disk. Reach for it when the procedure is run once.
+- **`/wizard`** — the agent writes the **bash script** that walks you through it: it opens each URL, says what to click, takes secrets hidden, upserts them into `.env` or GitHub secrets, and confirms before anything irreversible. Reach for it when the procedure will be run again — another machine, another repo, a colleague.
 
 ## Precondition
 

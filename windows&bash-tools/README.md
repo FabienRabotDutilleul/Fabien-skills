@@ -3,15 +3,13 @@
 Les outils qui franchissent la frontière **WSL → Windows**. Un agent qui tourne dans WSL n'a
 pas prise sur la machine hôte ; ce dossier la lui donne.
 
-Deux formes du même besoin, à choisir selon qui pilote :
+Deux formes du même besoin, selon qui pilote :
 
 | | Pour | Quoi |
 |---|---|---|
-| [`anti-sleep/`](anti-sleep/) | **l'agent** | Le skill. Claude empêche la machine de dormir tout seul, quand il en a besoin. |
-| [`awake/`](awake/) | **toi** | Les scripts. Une commande `awake` en ligne de commande, indépendante de tout agent. |
+| [`awake/`](awake/) | **toi** | **À privilégier.** Les scripts : une commande `awake` autonome, indépendante de tout agent — et qui ne coûte aucun token. |
+| [`anti-sleep/`](anti-sleep/) | **l'agent** | Le skill, pour les cas où l'agent doit décider seul de garder la machine éveillée. |
 
-
-### NOTE: Clairement, utiliser le script à chaque fois, pas besoin de gacher du token.
 ---
 
 ## `anti-sleep/` — le skill

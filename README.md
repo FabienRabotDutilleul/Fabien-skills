@@ -1,6 +1,6 @@
 # Fabien-skills
 
-Ma collection de skills pour Claude Code : 48 skills rangés par usage plutôt que par ordre
+Ma collection de skills pour Claude Code : 49 skills rangés par usage plutôt que par ordre
 d'arrivée. Chaque dossier principal porte son propre README qui explique brièvement ce que fait
 chacun de ses skills.
 
@@ -8,11 +8,11 @@ chacun de ses skills.
 
 | Dossier | Ce qu'on y trouve | Nb |
 |---|---|---|
-| [`engineering/`](engineering/) | Concevoir, écrire, relire du code et le découper en travail | 15 |
-| [`productivity/`](productivity/) | Durcir une idée, l'écrire, la dessiner, l'apprendre | 13 |
+| [`engineering/`](engineering/) | Concevoir, écrire, relire du code et le découper en travail | 16 |
+| [`productivity/`](productivity/) | Durcir une idée, l'écrire, la dessiner, l'apprendre | 15 |
 | [`kb/`](kb/) | Faire entrer du savoir dans une base lisible par agent | 10 |
 | [`research/`](research/) | Déléguer le travail de lecture | 3 |
-| [`agent-ops/`](agent-ops/) | Configurer et cadrer les agents eux-mêmes | 6 |
+| [`agent-ops/`](agent-ops/) | Configurer et cadrer les agents eux-mêmes | 4 |
 | [`windows&bash-tools/`](windows&bash-tools/) | Franchir la frontière WSL → Windows | 1 + scripts |
 
 ---
@@ -27,9 +27,9 @@ chacun de ses skills.
 > Ce n'est pas une recommandation : chez Rabot Dutilleul, **aucun agent ne tourne sur une
 > machine qui n'a pas le garde-fou installé.**
 >
-> Il pose une denylist unique de commandes shell catastrophiques — `rm -rf` sur `/` ou `~`,
-> `dd`/`mkfs`, `sudo rm`, fork bombs, `curl | sh`, `git push --force`, `gh repo delete` — en
-> hook PreToolUse / pre-exec sur **tous** les agents de la machine, pas seulement Claude Code. Execute:
+> Il pose une denylist unique de commandes shell catastrophiques en hook PreToolUse / pre-exec
+> sur **tous** les agents de la machine, pas seulement Claude Code — la liste exacte est dans
+> [`agent-ops/`](agent-ops/). Execute:
 >
 > ```bash
 > /global-agent-guardrails
@@ -45,7 +45,7 @@ chacun de ses skills.
 |---|---|
 | 🧭 **savoir quel skill prendre** | `agent-ops/ask-me` — un routeur sur toute la collection |
 | ✍️ **en écrire un** | `agent-ops/writing-for-agents` — le vocabulaire et les principes |
-| 🏗️ **bosser sur du code** | `agent-ops/setup-matt-pocock-skills` d'abord, une fois par dépôt |
+| 🏗️ **bosser sur du code** | `engineering/setup-matt-pocock-skills` d'abord, une fois par dépôt |
 | 😴 **qu'un run long ne soit pas coupé par un veille de Windows** | `windows&bash-tools/` |
 
 ---
@@ -96,7 +96,8 @@ c'est signalé dans le README du dossier concerné.
 - **`kb/youtube/channel-to-kb-supadata`** — s'appuie sur une API managée payante ; les deux
   autres variantes `channel-to-kb*` font la même chose gratuitement.
 
-Ces skills n'existent que parce que certaines informations de veille sur le dev et l'IA se trouvent d'abord sur Youtube, hors on a pas toujours le temps de regarder une conférence de 2h, ces skills résolvent ce problème.
+La veille dev et IA sort d'abord sur YouTube, et personne n'a deux heures pour une conférence.
+C'est le seul problème que ces skills résolvent.
 
 ### Ceux qui se lancent en sandbox
 
@@ -109,13 +110,8 @@ Ces skills n'existent que parce que certaines informations de veille sur le dev 
 > jetable ou conteneur, sans credentials, sans accès au reste de ta machine — et jamais sur un
 > projet qui contient des secrets.
 
-- **`research/research`** — enquête sur des sources primaires et écrit le résultat dans le
-  dépôt. Le plus sobre, mais il lit quand même du web non fiable.
-- **`research/storm-research`** — quatre phases, cinq lentilles d'experts, peer review
-  adversarial. Beaucoup de pages lues, donc beaucoup de surface d'injection.
-- **`research/last30days`** — le plus exposé : il moissonne Reddit, X, YouTube, TikTok, Hacker
-  News et GitHub, c'est-à-dire du texte écrit par n'importe qui. À ne jamais lancer hors bac à
-  sable.
+Le détail skill par skill, lequel est le plus exposé et les réflexes à garder même en sandbox
+sont dans [`research/README.md`](research/README.md).
 
 ## Attribution
 
@@ -123,7 +119,7 @@ Cette collection agrège du travail qui n'est pas tout de moi :
 
 | Origine | Skills |
 |---|---|
-| [Matt Pocock](https://github.com/mattpocock) | l'essentiel d'`engineering/`, plus `setup-matt-pocock-skills`, `writing-for-agents`, `to-questionnaire`, `wait-what`, la famille `grill*`, et `ask-me` (dérivé de son `ask-matt`) |
+| [Matt Pocock](https://github.com/mattpocock) | l'essentiel d'`engineering/`, plus `setup-matt-pocock-skills`, `writing-for-agents`, `to-questionnaire`, `wait-what`, `wizard`, la famille `grill*`, et `ask-me` (dérivé de son `ask-matt`) |
 | [Cole Medin](https://github.com/coleam00) | les trois `channel-to-kb*` |
 | [bradautomates](https://github.com/bradautomates/claude-video) — MIT | `watch` |
 
@@ -137,12 +133,12 @@ tels quels ailleurs : `quiz`, `classify_output`,
 `inject_into_knowledge_base`. Ils restent publiés parce que la mécanique est réutilisable même
 si le domaine ne l'est pas.
 
-## Continuer de votre côté :
+## Continuer de ton côté :
 
 
- - Les skills sont les nouvelles fonctionnalités des applications de nos jours. Il est fortement conseillé de tester et de créer vos skills vous-même en fonction de vos tâches répétitives quotidiennes ou de processus complexes pouvant quand même être automatisés. Conseils de ma part :
+ - Les skills sont les nouvelles fonctionnalités des applications de nos jours. Il est fortement conseillé de tester et de créer tes skills toi-même en fonction de tes tâches répétitives quotidiennes ou de processus complexes pouvant quand même être automatisés. Conseils de ma part :
 
- - Toute tâche automatisable, que vous faites vous-même plusieurs fois par jour, doit devenir un skill.
+ - Toute tâche automatisable, que tu fais toi-même plusieurs fois par jour, doit devenir un skill.
  Écrire ses propres skills est une qualité de développeur unique et fortement conseillée. Les skills écrits à la main sont souvent plus efficaces. 
  
- - Si vous demandez à un agent de vous créer un skill, utilisez toujours writing-for-agents afin de bénéficier du meilleur format.
+ - Si tu demandes à un agent de te créer un skill, utilise toujours writing-for-agents afin de bénéficier du meilleur format.

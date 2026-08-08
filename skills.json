@@ -2,17 +2,17 @@
   "repo": "FabienRabotDutilleul/Fabien-skills",
   "ref": "main",
   "version": 1,
-  "count": 48,
+  "count": 49,
   "categories": [
     {
       "id": "agent-ops",
       "description": "Configurer et cadrer les agents eux-mêmes",
-      "count": 6
+      "count": 4
     },
     {
       "id": "engineering",
       "description": "Concevoir, écrire, relire du code et le découper en travail",
-      "count": 15
+      "count": 16
     },
     {
       "id": "kb",
@@ -22,7 +22,7 @@
     {
       "id": "productivity",
       "description": "Durcir une idée, l'écrire, la dessiner, l'apprendre",
-      "count": 13
+      "count": 15
     },
     {
       "id": "research",
@@ -48,7 +48,7 @@
       "license": null,
       "badges": [],
       "setup": null,
-      "bytes": 20232,
+      "bytes": 20812,
       "files": [
         {
           "path": "agents/openai.yaml",
@@ -60,7 +60,7 @@
         },
         {
           "path": "SKILL.md",
-          "bytes": 15821
+          "bytes": 16401
         }
       ]
     },
@@ -106,74 +106,6 @@
         {
           "path": "SKILL.md",
           "bytes": 10128
-        }
-      ]
-    },
-    {
-      "name": "setup-help",
-      "path": "agent-ops/setup-help",
-      "category": "agent-ops",
-      "group": null,
-      "description": "Walk the user through setting up anything step by step. Use when the user asks for help setting up, configuring, installing, or getting something working — \"help me set up X\", \"walk me through this\", \"setup-help\". Differentiator: gives one current step at a time, then always lists every remaining setup step after each response.",
-      "argumentHint": null,
-      "disableModelInvocation": true,
-      "allowedTools": null,
-      "license": null,
-      "badges": [],
-      "setup": null,
-      "bytes": 2426,
-      "files": [
-        {
-          "path": "agents/openai.yaml",
-          "bytes": 43
-        },
-        {
-          "path": "SKILL.md",
-          "bytes": 2383
-        }
-      ]
-    },
-    {
-      "name": "setup-matt-pocock-skills",
-      "path": "agent-ops/setup-matt-pocock-skills",
-      "category": "agent-ops",
-      "group": null,
-      "description": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
-      "argumentHint": null,
-      "disableModelInvocation": true,
-      "allowedTools": null,
-      "license": null,
-      "badges": [],
-      "setup": null,
-      "bytes": 19581,
-      "files": [
-        {
-          "path": "agents/openai.yaml",
-          "bytes": 152
-        },
-        {
-          "path": "domain.md",
-          "bytes": 2045
-        },
-        {
-          "path": "issue-tracker-github.md",
-          "bytes": 3745
-        },
-        {
-          "path": "issue-tracker-gitlab.md",
-          "bytes": 3826
-        },
-        {
-          "path": "issue-tracker-local.md",
-          "bytes": 1846
-        },
-        {
-          "path": "SKILL.md",
-          "bytes": 6922
-        },
-        {
-          "path": "triage-labels.md",
-          "bytes": 1045
         }
       ]
     },
@@ -1045,6 +977,50 @@
       ]
     },
     {
+      "name": "setup-matt-pocock-skills",
+      "path": "engineering/setup-matt-pocock-skills",
+      "category": "engineering",
+      "group": null,
+      "description": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 19581,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 152
+        },
+        {
+          "path": "domain.md",
+          "bytes": 2045
+        },
+        {
+          "path": "issue-tracker-github.md",
+          "bytes": 3745
+        },
+        {
+          "path": "issue-tracker-gitlab.md",
+          "bytes": 3826
+        },
+        {
+          "path": "issue-tracker-local.md",
+          "bytes": 1846
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6922
+        },
+        {
+          "path": "triage-labels.md",
+          "bytes": 1045
+        }
+      ]
+    },
+    {
       "name": "tdd",
       "path": "engineering/tdd",
       "category": "engineering",
@@ -1603,6 +1579,58 @@
         {
           "path": "SKILL.md",
           "bytes": 9507
+        }
+      ]
+    },
+    {
+      "name": "setup-help",
+      "path": "productivity/setup/setup-help",
+      "category": "productivity",
+      "group": "setup",
+      "description": "Walk the user through setting up anything step by step. Use when the user asks for help setting up, configuring, installing, or getting something working — \"help me set up X\", \"walk me through this\", \"setup-help\". Differentiator: gives one current step at a time, then always lists every remaining setup step after each response.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 2426,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 43
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2383
+        }
+      ]
+    },
+    {
+      "name": "wizard",
+      "path": "productivity/setup/wizard",
+      "category": "productivity",
+      "group": "setup",
+      "description": "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 13244,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 96
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 4207
+        },
+        {
+          "path": "template.sh",
+          "bytes": 8941
         }
       ]
     },
