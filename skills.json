@@ -1466,7 +1466,7 @@
       "license": null,
       "badges": [],
       "setup": "uv sync",
-      "bytes": 71158,
+      "bytes": 44012,
       "files": [
         {
           "path": ".gitignore",
@@ -1499,10 +1499,6 @@
         {
           "path": "references/render_template.html",
           "bytes": 1705
-        },
-        {
-          "path": "references/uv.lock",
-          "bytes": 27146
         },
         {
           "path": "SKILL.md",

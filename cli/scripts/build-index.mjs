@@ -11,9 +11,10 @@
  *   node cli/scripts/build-index.mjs          # write skills.json
  *   node cli/scripts/build-index.mjs --check  # fail if it is stale (for CI)
  */
-import { readFile, writeFile, readdir, stat } from "node:fs/promises";
-import { join, relative, sep } from "node:path";
+import { readFile, writeFile, stat } from "node:fs/promises";
+import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 import { parse as parseYaml } from "yaml";
 
 const REPO_ROOT = fileURLToPath(new URL("../..", import.meta.url));
@@ -64,15 +65,45 @@ const SETUP_HINTS = [
   ["package.json", "npm i"],
 ];
 
-async function* walk(dir) {
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (entry.isDirectory()) {
-      if (PRUNE.has(entry.name) || entry.name.startsWith(".")) continue;
-      yield* walk(join(dir, entry.name));
-    } else if (entry.isFile()) {
-      yield join(dir, entry.name);
-    }
+/**
+ * The tracked files, straight from git.
+ *
+ * Deliberately not a filesystem walk. The index tells the CLI what to download
+ * from GitHub, so it must describe what git actually has: a walk also picks up
+ * ignored and untracked files — a stray `uv.lock` did exactly that — and every
+ * user then gets a 404 on a file that only ever existed on one machine.
+ *
+ * `git ls-files -s` also carries the real mode, which is what GitHub serves, so
+ * the executable bit no longer depends on the local umask.
+ */
+function trackedFiles() {
+  let raw;
+  try {
+    raw = execFileSync("git", ["ls-files", "-s", "-z"], {
+      cwd: REPO_ROOT,
+      encoding: "utf8",
+      maxBuffer: 64 * 1024 * 1024,
+    });
+  } catch (err) {
+    throw new Error(`impossible de lire l'index git (${err.message})`);
   }
+
+  return raw
+    .split("\0")
+    .filter(Boolean)
+    .map((entry) => {
+      // "<mode> <sha> <stage>\t<path>"
+      const tab = entry.indexOf("\t");
+      const [mode] = entry.slice(0, tab).split(" ");
+      return { path: entry.slice(tab + 1), mode };
+    })
+    .filter(({ path }) => {
+      // Only directories are pruned, never files: `.skillignore` tells install-time
+      // security scanners what to skip, so it has to ship with its skill.
+      const dirs = path.split("/").slice(0, -1);
+      // `.macos-original/` is a variant kept for reference, not an installable skill.
+      return !dirs.some((seg) => seg.startsWith(".") || PRUNE.has(seg));
+    });
 }
 
 /**
@@ -95,14 +126,15 @@ async function collect() {
   const skills = [];
   const problems = [];
 
-  for await (const file of walk(REPO_ROOT)) {
-    if (!file.endsWith(`${sep}SKILL.md`)) continue;
+  const tracked = trackedFiles();
 
-    const dir = file.slice(0, -`${sep}SKILL.md`.length);
-    const path = relative(REPO_ROOT, dir).split(sep).join("/");
+  for (const entry of tracked) {
+    if (!entry.path.endsWith("/SKILL.md")) continue;
+
+    const path = entry.path.slice(0, -"/SKILL.md".length);
     const [category, ...rest] = path.split("/");
 
-    const fm = await frontmatter(file);
+    const fm = await frontmatter(join(REPO_ROOT, entry.path));
     if (!fm) {
       problems.push(`${path}: no YAML frontmatter`);
       continue;
@@ -117,14 +149,21 @@ async function collect() {
 
     const files = [];
     let bytes = 0;
-    for await (const f of walk(dir)) {
-      const { size, mode } = await stat(f);
-      const entry = { path: relative(dir, f).split(sep).join("/"), bytes: size };
+    for (const file of tracked) {
+      if (!file.path.startsWith(`${path}/`)) continue;
+      let size;
+      try {
+        ({ size } = await stat(join(REPO_ROOT, file.path)));
+      } catch {
+        problems.push(`${file.path}: tracké par git mais absent du disque`);
+        continue;
+      }
+      const record = { path: file.path.slice(path.length + 1), bytes: size };
       // raw.githubusercontent.com serves content without permissions, so the bit
       // travels in the index instead — otherwise every bundled launcher lands
       // non-executable and the skill breaks on first run.
-      if (mode & 0o111) entry.exec = true;
-      files.push(entry);
+      if (file.mode === "100755") record.exec = true;
+      files.push(record);
       bytes += size;
     }
     files.sort((a, b) => a.path.localeCompare(b.path));
