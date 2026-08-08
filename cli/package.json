@@ -4,7 +4,7 @@
   "description": "Installe les skills de Fabien-skills dans Claude Code, en une commande.",
   "type": "module",
   "bin": {
-    "add-fabien-skills": "./bin/add-fabien-skills.mjs"
+    "add-fabien-skills": "bin/add-fabien-skills.mjs"
   },
   "files": [
     "bin",
