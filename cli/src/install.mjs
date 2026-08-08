@@ -6,7 +6,7 @@
  * (this project only). Installing is therefore: fetch the files, write them under
  * the target, and set `disable-model-invocation` in the frontmatter.
  */
-import { mkdir, writeFile, rm, chmod, readdir, stat } from "node:fs/promises";
+import { mkdir, writeFile, rm, chmod, readdir, rename, stat } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { readSkillFile } from "./registry.mjs";
@@ -47,6 +47,28 @@ export function setModelInvocation(text, value) {
 
   const rebuilt = `---\n${lines.join("\n")}\n---${body}`;
   return { text: eol === "\n" ? rebuilt : rebuilt.replace(/\n/g, eol), patched: true };
+}
+
+/**
+ * Removes stagings orphaned by a run that was killed mid-download. `installSkill`
+ * cleans up its own on failure, but not one left by a SIGKILL, and not one left by
+ * a *different* skill.
+ */
+export async function sweepPartials(dir) {
+  let entries;
+  try {
+    entries = await readdir(dir, { withFileTypes: true });
+  } catch {
+    return 0;
+  }
+  let swept = 0;
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    if (!entry.name.startsWith(".") || !entry.name.endsWith(".partial")) continue;
+    await rm(join(dir, entry.name), { recursive: true, force: true });
+    swept += 1;
+  }
+  return swept;
 }
 
 async function* walk(dir) {
@@ -93,7 +115,6 @@ export async function installSkill(index, skill, dir, { dmi, onFile } = {}) {
 
     await rm(dest, { recursive: true, force: true });
     await mkdir(dirname(dest), { recursive: true });
-    const { rename } = await import("node:fs/promises");
     await rename(staging, dest);
   } catch (err) {
     await rm(staging, { recursive: true, force: true });

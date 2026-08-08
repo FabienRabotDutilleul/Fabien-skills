@@ -5,13 +5,24 @@
  * `npx` tool, so every dependency is download time the user waits through before
  * seeing anything. Zero deps means the picker is on screen immediately.
  */
+import { styleText } from "node:util";
+
 const stdout = process.stdout;
+const stderr = process.stderr;
 const ESC = "\x1b[";
 
-export const colorEnabled =
-  !process.env.NO_COLOR &&
-  process.env.TERM !== "dumb" &&
-  (stdout.isTTY || process.env.FORCE_COLOR === "1");
+/**
+ * Whether to emit colour, decided by Node itself.
+ *
+ * This used to be hand-rolled, and got 4 of 6 cases wrong: `FORCE_COLOR=2`, `=3`,
+ * `=true` and `=` (empty) all mean "colour on" and were read as off, while
+ * `NODE_DISABLE_COLORS=1` was ignored outright. `styleText` already implements the
+ * whole matrix — TTY detection, NO_COLOR, FORCE_COLOR in every form, TERM=dumb —
+ * so asking it whether it coloured a probe string is both shorter and correct.
+ *
+ * Env-awareness landed in Node 20.18 / 22.8, which is why `engines` starts there.
+ */
+export const colorEnabled = styleText("red", "x") !== "x";
 
 const wrap = (open, close) => (text) =>
   colorEnabled ? `${ESC}${open}m${text}${ESC}${close}m` : String(text);
@@ -91,6 +102,9 @@ export function truncate(text, max) {
 export const columns = () => Math.min(stdout.columns || 80, 110);
 
 export const write = (text) => stdout.write(text);
+
+/** Diagnostics go to stderr, so `--list > file` and `2>` behave as expected. */
+export const writeErr = (text) => stderr.write(text);
 export const hideCursor = () => stdout.isTTY && write(`${ESC}?25l`);
 export const showCursor = () => stdout.isTTY && write(`${ESC}?25h`);
 

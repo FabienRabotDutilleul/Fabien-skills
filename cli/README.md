@@ -51,14 +51,27 @@ npx add-fabien-skills --list
 | `-f, --force` | écrase sans demander |
 | `-l, --list` | liste les skills puis sort |
 | `-n, --dry-run` | montre le plan, n'écrit rien |
+| `-y, --yes` | prend les réponses par défaut — n'implique **pas** `--force` |
+| `--no-interactive` | n'ouvre aucun prompt (déduit du terminal sinon) |
 | `--ref <ref>` | branche ou tag du dépôt |
 | `--source <path>` | lit un dépôt local au lieu de GitHub |
+| `-v, --version` | la version de l'outil |
+
+Les diagnostics vont sur `stderr` et la liste sur `stdout`, donc `--list > skills.txt`
+donne un fichier propre. Sortie `0` en cas de succès, `1` en cas d'erreur, `130` si tu annules.
+
+Requiert **Node ^20.18 ou >= 22.8**. En dessous, le CLI s'arrête avec un message plutôt
+qu'avec une trace : `engines` n'est qu'indicatif, npm exécute quand même le paquet.
 
 ## Dépôts privés
 
-`Fabien-skills` est public, donc rien à configurer. Si tu pointes le CLI sur un dépôt privé —
-un fork interne via `--source owner/repo` — il bascule sur l'API GitHub authentifiée dès qu'il
-trouve un token portant `contents:read` :
+`Fabien-skills` est public, donc rien à configurer — et exporter un `GITHUB_TOKEN` ne change
+rien, c'est voulu. Le CLI passe **toujours** par le CDN d'abord et ne bascule sur l'API GitHub
+authentifiée que si celui-ci répond 404 *et* qu'un token existe, c'est-à-dire uniquement pour un
+dépôt réellement privé. L'API coûte un appel authentifié par fichier sur un quota de 5000/h, là
+où le CDN n'en consomme aucun.
+
+Pour un fork interne privé :
 
 ```bash
 export GITHUB_TOKEN=$(gh auth token)

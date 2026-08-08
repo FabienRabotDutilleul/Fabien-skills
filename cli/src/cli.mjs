@@ -3,11 +3,17 @@
  * them where Claude Code will find them.
  */
 import { loadIndex, isSourceError, DEFAULT_REF, DEFAULT_REPO } from "./registry.mjs";
-import { installSkill, targetDir, existsAt } from "./install.mjs";
+import { installSkill, targetDir, existsAt, sweepPartials } from "./install.mjs";
 import { multiselect, select, CANCEL } from "./prompts.mjs";
-import { c, s, accent, intro, outro, cancel, note, write, columns, truncate, clearLine, BADGES } from "./ui.mjs";
+import { c, s, accent, intro, outro, cancel, note, write, writeErr, columns, truncate, clearLine, BADGES } from "./ui.mjs";
 import { homedir } from "node:os";
-import { relative, resolve } from "node:path";
+import { resolve } from "node:path";
+import { createRequire } from "node:module";
+
+// `createRequire` rather than `import ... with { type: "json" }`: import attributes
+// are a parse error before Node 20.10, which would crash the CLI before the version
+// guard in bin/ ever got the chance to explain why.
+const { version } = createRequire(import.meta.url)("../package.json");
 
 const HELP = `
 ${accent("add-fabien-skills")} — installe les skills de ${c.bold("Fabien-skills")} dans Claude Code
@@ -22,9 +28,12 @@ ${c.bold("OPTIONS")}
   -f, --force            écrase sans demander
   -l, --list             liste les skills disponibles puis sort
   -n, --dry-run          montre le plan, n'écrit rien
+  -y, --yes              accepte les réponses par défaut sans demander
+      --no-interactive   n'ouvre aucun prompt (déduit du terminal par défaut)
       --ref <ref>        branche ou tag du dépôt (défaut : ${DEFAULT_REF})
       --source <path>    lit un dépôt local au lieu de GitHub
   -h, --help             cette aide
+  -v, --version          la version de cet outil
 
 ${c.bold("EXEMPLES")}
   npx add-fabien-skills
@@ -33,6 +42,11 @@ ${c.bold("EXEMPLES")}
 `;
 
 function parseArgs(argv) {
+  // Answered before the line is validated: someone who mistyped a flag is exactly
+  // who needs the help text, and refusing it to teach them a lesson helps nobody.
+  if (argv.includes("-h") || argv.includes("--help")) return { help: true };
+  if (argv.includes("-v") || argv.includes("--version")) return { version: true };
+
   const opts = { force: false, list: false, dryRun: false, ref: DEFAULT_REF };
   const rest = [...argv];
   while (rest.length) {
@@ -47,7 +61,10 @@ function parseArgs(argv) {
       case "-l": case "--list": opts.list = true; break;
       case "-n": case "--dry-run": opts.dryRun = true; break;
       case "-y": case "--yes": opts.yes = true; break;
+      case "--interactive": opts.interactive = true; break;
+      case "--no-interactive": opts.interactive = false; break;
       case "-h": case "--help": opts.help = true; break;
+      case "-v": case "--version": opts.version = true; break;
       default:
         if (arg.startsWith("-")) throw new UserError(`option inconnue : ${arg}`);
         opts.source ??= arg;
@@ -115,20 +132,33 @@ function resolveRequested(index, spec) {
 export async function run(argv) {
   const opts = parseArgs(argv);
 
+  // Answered before anything else, so `--help --bogus` still helps and neither
+  // touches the network. `create-vite --version` scaffolds a project instead;
+  // `create-astro --version` creates a directory called "--version".
   if (opts.help) {
     write(HELP);
     return 0;
   }
+  if (opts.version) {
+    write(`${version}\n`);
+    return 0;
+  }
 
-  const interactive = process.stdin.isTTY && process.stdout.isTTY;
+  const interactive = opts.interactive ?? (process.stdin.isTTY && process.stdout.isTTY);
+  // `--yes` means "stop asking me the secondary questions". It never implies
+  // --force: overwriting someone's edited skill stays an explicit decision.
+  const ask = interactive && !opts.yes;
 
   const isLocalSource = opts.source && (opts.source.startsWith(".") || opts.source.startsWith("/"));
-  intro(
-    "add-fabien-skills",
-    isLocalSource
-      ? `local · ${tilde(resolve(opts.source))}`
-      : `${opts.source ?? DEFAULT_REPO}${opts.ref === DEFAULT_REF ? "" : `#${opts.ref}`}`,
-  );
+  // The banner is decoration; it must not end up in `--list > skills.txt`.
+  if (!opts.list) {
+    intro(
+      "add-fabien-skills",
+      isLocalSource
+        ? `local · ${tilde(resolve(opts.source))}`
+        : `${opts.source ?? DEFAULT_REPO}${opts.ref === DEFAULT_REF ? "" : `#${opts.ref}`}`,
+    );
+  }
 
   const index = await spin("lecture de l'index…", () =>
     loadIndex({ source: opts.source, ref: opts.ref }),
@@ -164,7 +194,7 @@ export async function run(argv) {
   // ---- 2. where ------------------------------------------------------------
   let target = opts.target;
   if (!target) {
-    if (!interactive) target = "global";
+    if (!ask) target = "global";
     else {
       const picked = await select({
         title: "Installer où ?",
@@ -185,7 +215,7 @@ export async function run(argv) {
   // ---- 3. model invocation -------------------------------------------------
   let dmi = opts.dmi === undefined ? undefined : opts.dmi === "true";
   if (dmi === undefined) {
-    if (!interactive) dmi = null;
+    if (!ask) dmi = null;
     else {
       const picked = await select({
         title: "L'agent peut-il déclencher ces skills tout seul ?",
@@ -240,7 +270,7 @@ export async function run(argv) {
   }
 
   if (existing.length && !opts.force) {
-    if (!interactive) {
+    if (!ask) {
       throw new UserError(
         `${existing.map((x) => x.name).join(", ")} ${existing.length > 1 ? "existent" : "existe"} déjà — utilise --force`,
       );
@@ -266,6 +296,10 @@ export async function run(argv) {
   }
 
   // ---- 5. install ----------------------------------------------------------
+  // A run killed mid-download leaves its staging behind; clear any before adding
+  // more, so the target never accumulates `.name.partial` folders.
+  await sweepPartials(dir);
+
   const failures = [];
   for (const skill of chosen) {
     try {
@@ -301,7 +335,7 @@ export async function main(argv) {
     return await run(argv);
   } catch (err) {
     if (err instanceof UserError || isSourceError(err)) {
-      write(`${c.gray(s.bar)}\n${c.red(s.cross)}  ${err.message}\n\n`);
+      writeErr(`${c.gray(s.bar)}\n${c.red(s.cross)}  ${err.message}\n\n`);
       return 1;
     }
     throw err;

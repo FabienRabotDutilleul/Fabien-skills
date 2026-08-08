@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ["20", "22", "24"]
+        # 20.18 is the floor `engines` claims, so it is the floor that gets tested:
+        # it is the first release where util.styleText reads NO_COLOR/FORCE_COLOR.
+        node: ["20.18", "22", "24"]
     steps:
       - uses: actions/checkout@v4
 

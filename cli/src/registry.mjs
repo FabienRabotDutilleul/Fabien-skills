@@ -6,9 +6,15 @@
  * ~16 MB, nearly all of it media belonging to a single skill, so cloning to install
  * a 7 KB skill would be the slowest possible way to do this.
  *
- * Two transports, picked automatically:
- *   - public repo  → raw.githubusercontent.com, no auth, no rate limit worth caring about
- *   - private repo → the contents API with a token from GITHUB_TOKEN / GH_TOKEN
+ * Two transports, in this order:
+ *   - raw.githubusercontent.com, always, unauthenticated — a CDN, and the only
+ *     path that scales to a 143-file skill
+ *   - the contents API with GITHUB_TOKEN / GH_TOKEN, but only after raw returns
+ *     404 and only if a token exists, i.e. only for a genuinely private repo
+ *
+ * The order matters. Preferring the API whenever a token happened to be exported
+ * pushed every `gh` user, every devcontainer and every CI job off the CDN and onto
+ * a 5000/h budget — one call per file — while raw ignores credentials entirely.
  */
 import { readFile } from "node:fs/promises";
 import { isAbsolute, resolve } from "node:path";
@@ -31,68 +37,156 @@ export const apiUrl = (repo, ref, path) =>
 class SourceError extends Error {}
 export const isSourceError = (err) => err instanceof SourceError;
 
-const headers = (accept) => {
-  const auth = token();
-  return {
-    accept,
-    "user-agent": "add-fabien-skills",
-    ...(auth ? { authorization: `Bearer ${auth}` } : {}),
-  };
-};
+/** Transient by nature: worth another go, unlike a 404 or a 401. */
+const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
 
-async function get(url, accept, timeout) {
-  let response;
-  try {
-    response = await fetch(url, { signal: AbortSignal.timeout(timeout), headers: headers(accept) });
-  } catch (err) {
-    throw new SourceError(
-      err.name === "TimeoutError"
-        ? "la requête a expiré — réseau lent ou coupé ?"
-        : `impossible de joindre GitHub (${err.message})`,
-    );
-  }
-  return response;
-}
+const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
-/** Fetches one repo path as bytes, over whichever transport is available. */
-async function fetchPath(repo, ref, path, { timeout = 30_000 } = {}) {
-  const auth = token();
-  const url = auth ? apiUrl(repo, ref, path) : rawUrl(repo, ref, path);
-  const response = await get(url, auth ? "application/vnd.github.raw" : "*/*", timeout);
+/**
+ * Native fetch throws a bare `TypeError: fetch failed` and buries the real reason
+ * in `cause`, so "impossible de joindre GitHub (fetch failed)" told the user
+ * nothing. This surfaces ENOTFOUND / ECONNREFUSED / EAI_AGAIN / CERT_HAS_EXPIRED.
+ */
+const causeOf = (err) => err?.cause?.errors?.[0]?.code ?? err?.cause?.code ?? err?.message;
 
-  if (response.status === 404) throw new SourceError(`introuvable : ${path}`);
-  if (response.status === 403 || response.status === 401) {
-    throw new SourceError(
-      auth
-        ? `accès refusé sur ${repo} — le token n'a pas le droit \`contents:read\` ?`
-        : `accès refusé sur ${repo} (${response.status})`,
-    );
-  }
-  if (!response.ok) throw new SourceError(`GitHub a répondu ${response.status} sur ${path}`);
+/** Node ignores HTTPS_PROXY unless told to, which looks exactly like "no network". */
+const proxyHint = () =>
+  process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy
+    ? "\n  Un proxy est configuré, mais Node ne le suit pas de lui-même :\n" +
+      "  relance avec NODE_USE_ENV_PROXY=1 (Node >= 22.21)."
+    : "";
 
-  return Buffer.from(await response.arrayBuffer());
+/** Honours `Retry-After` when GitHub sends one, exponential backoff otherwise. */
+function backoff(response, attempt) {
+  const after = Number(response.headers.get("retry-after"));
+  if (Number.isFinite(after) && after > 0) return Math.min(after * 1000, 10_000);
+  return 300 * 2 ** attempt + Math.random() * 200;
 }
 
 /**
- * Tells apart "the index is missing" from "the repo is private or does not exist".
- * Both surface as a 404 on the file, and the fix is completely different.
+ * One request, retried on transient failures.
+ *
+ * `raw.githubusercontent.com` carries an anti-scraping throttle that answers 429
+ * with no warning and no `x-ratelimit-*` headers, and a big skill is exactly the
+ * burst that trips it. Without this, one blip killed the whole install.
+ */
+async function get(url, { accept, timeout, auth = null, attempts = 3 }) {
+  let failure;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(timeout),
+        headers: {
+          accept,
+          "user-agent": "add-fabien-skills",
+          ...(auth ? { authorization: `Bearer ${auth}` } : {}),
+        },
+      });
+      if (!RETRYABLE.has(response.status) || attempt === attempts - 1) return response;
+      await sleep(backoff(response, attempt));
+    } catch (err) {
+      failure = err;
+      // A timeout already waited the full budget; retrying just triples the wait.
+      if (err.name === "TimeoutError" || attempt === attempts - 1) break;
+      await sleep(300 * 2 ** attempt + Math.random() * 200);
+    }
+  }
+  throw new SourceError(
+    failure?.name === "TimeoutError"
+      ? "la requête a expiré — réseau lent ou coupé ?"
+      : `impossible de joindre GitHub (${causeOf(failure)})${proxyHint()}`,
+  );
+}
+
+/** The private-repo path: authenticated, one API call per file, no CDN. */
+async function fetchViaApi(repo, ref, path, timeout) {
+  const response = await get(apiUrl(repo, ref, path), {
+    accept: "application/vnd.github.raw",
+    timeout,
+    auth: token(),
+  });
+  if (response.ok) return Buffer.from(await response.arrayBuffer());
+  if (response.status === 404) throw new SourceError(`introuvable : ${path}`);
+  if (response.status === 401 || response.status === 403) {
+    throw new SourceError(`accès refusé sur ${repo} — le token porte-t-il \`contents:read\` ?`);
+  }
+  throw new SourceError(`GitHub a répondu ${response.status} sur ${path}`);
+}
+
+/** Fetches one repo path as bytes. */
+async function fetchPath(repo, ref, path, { timeout = 30_000 } = {}) {
+  // Never send credentials here: raw ignores them, and `vary: Authorization` means
+  // sending one only carves out a private CDN cache key that nobody else can hit.
+  const response = await get(rawUrl(repo, ref, path), { accept: "*/*", timeout });
+  if (response.ok) return Buffer.from(await response.arrayBuffer());
+
+  if (response.status === 404) {
+    if (token()) return fetchViaApi(repo, ref, path, timeout);
+    throw new SourceError(`introuvable : ${path}`);
+  }
+  if (response.status === 429) {
+    throw new SourceError(
+      `GitHub throttle les téléchargements depuis cette IP (429 sur ${path}).\n` +
+        "  Réessaie dans quelques minutes, ou installe moins de skills à la fois.",
+    );
+  }
+  throw new SourceError(`GitHub a répondu ${response.status} sur ${path}`);
+}
+
+/**
+ * Tells apart "the index is missing" from "the repo is private" from "this IP is
+ * rate-limited". All three surface as a 404 on the file, and the fixes have
+ * nothing in common — so the answer has to come from the status, not from the
+ * mere fact that the probe failed.
  */
 async function diagnose404(repo, ref) {
-  const response = await get(`https://api.github.com/repos/${repo}`, "application/vnd.github+json", 10_000);
+  let response;
+  try {
+    response = await get(`https://api.github.com/repos/${repo}`, {
+      accept: "application/vnd.github+json",
+      timeout: 10_000,
+      auth: token(),
+      attempts: 1,
+    });
+  } catch {
+    return `pas de skills.json sur ${repo}#${ref}, et l'API GitHub est injoignable pour dire pourquoi.`;
+  }
+
   if (response.ok) {
     return (
       `pas de skills.json sur ${repo}#${ref} — la branche existe-t-elle, ` +
       "et l'index y est-il poussé (`npm run index` puis commit) ?"
     );
   }
-  if (token()) {
-    return `${repo} est inaccessible avec ce token — vérifie qu'il porte le droit \`contents:read\` sur ce dépôt.`;
+
+  // The API allows 60 requests per hour per IP unauthenticated. Behind corporate
+  // egress or shared NAT that is spent by somebody else, and reading it as
+  // "the repo is private" sends the user chasing a permission problem they
+  // do not have.
+  if (response.status === 403 || response.status === 429) {
+    const reset = Number(response.headers.get("x-ratelimit-reset"));
+    const when = Number.isFinite(reset) && reset > 0
+      ? ` Réessaie après ${new Date(reset * 1000).toLocaleTimeString()}.`
+      : "";
+    return (
+      `GitHub limite les requêtes venant de cette IP (60/h sans token).${when}\n` +
+      "  Ou donne-lui un token :  export GITHUB_TOKEN=$(gh auth token)"
+    );
   }
-  return (
-    `${repo} est privé (ou n'existe pas).\n` +
-    "  Rends le dépôt public pour que `npx add-fabien-skills` marche pour tout le monde,\n" +
-    "  ou exporte un token GitHub :  export GITHUB_TOKEN=$(gh auth token)"
-  );
+
+  if (response.status === 401) {
+    return `le token GITHUB_TOKEN/GH_TOKEN est refusé par GitHub (401) — expiré ?`;
+  }
+
+  if (response.status === 404) {
+    return token()
+      ? `${repo} est inaccessible avec ce token — porte-t-il \`contents:read\` sur ce dépôt ?`
+      : `${repo} est privé (ou n'existe pas).\n` +
+        "  Rends le dépôt public pour que `npx add-fabien-skills` marche pour tout le monde,\n" +
+        "  ou exporte un token GitHub :  export GITHUB_TOKEN=$(gh auth token)";
+  }
+
+  return `${repo}#${ref} : GitHub a répondu ${response.status}, impossible de diagnostiquer.`;
 }
 
 function validate(index) {
