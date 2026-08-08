@@ -31,6 +31,29 @@ npx add-fabien-skills --list
 | `--ref <ref>` | branche ou tag du dépôt |
 | `--source <path>` | lit un dépôt local au lieu de GitHub |
 
+## Dépôt privé
+
+`Fabien-skills` est **privé** aujourd'hui. `raw.githubusercontent.com` renvoie donc 404 pour
+tout le monde, y compris toi, et `npx add-fabien-skills` ne peut rien installer en l'état.
+
+Deux sorties :
+
+- **Rendre le dépôt public** — c'est ce qui fait marcher la commande pour n'importe qui, et la
+  seule option cohérente avec le fait de publier le CLI sur npm.
+- **Rester privé** — le CLI bascule alors sur l'API GitHub authentifiée dès qu'il trouve un
+  token :
+
+  ```bash
+  export GITHUB_TOKEN=$(gh auth token)
+  npx add-fabien-skills
+  ```
+
+  Le token doit porter `contents:read` sur le dépôt. Utile pour un usage interne, mais publier
+  sur npm un paquet que personne ne peut utiliser n'a pas grand sens.
+
+Le CLI distingue les deux causes possibles d'un 404 (dépôt inaccessible vs index pas encore
+poussé) et le dit, parce que le correctif n'est pas le même.
+
 ## Comment ça marche
 
 Le CLI ne clone jamais. Il lit [`skills.json`](../skills.json) à la racine du dépôt — une seule

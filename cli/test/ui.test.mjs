@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { width, truncate, colorEnabled } from "../src/ui.mjs";
-import { rawUrl } from "../src/registry.mjs";
+import { rawUrl, apiUrl } from "../src/registry.mjs";
 
 test("width ignores colour codes", () => {
   assert.equal(width("abc"), 3);
@@ -40,4 +40,16 @@ test("rawUrl keeps separators intact", () => {
     rawUrl("FabienRabotDutilleul/Fabien-skills", "main", "engineering/tdd/SKILL.md"),
     "https://raw.githubusercontent.com/FabienRabotDutilleul/Fabien-skills/main/engineering/tdd/SKILL.md",
   );
+});
+
+test("apiUrl encodes the path and passes the ref as a query param", () => {
+  // The private-repo transport: the ref cannot ride in the path here.
+  assert.equal(
+    apiUrl("owner/repo", "main", "windows&bash-tools/anti-sleep/SKILL.md"),
+    "https://api.github.com/repos/owner/repo/contents/windows%26bash-tools/anti-sleep/SKILL.md?ref=main",
+  );
+});
+
+test("apiUrl survives a ref with a slash", () => {
+  assert.ok(apiUrl("owner/repo", "feat/x", "a.md").endsWith("?ref=feat%2Fx"));
 });
