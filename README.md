@@ -70,11 +70,6 @@ npx add-fabien-skills --list
 
 Le détail des options et le fonctionnement sont dans [`cli/`](cli/).
 
-> [!NOTE]
-> Ce dépôt est privé, donc la commande ne marche qu'avec un token
-> (`export GITHUB_TOKEN=$(gh auth token)`). Le rendre public suffit à la faire marcher pour
-> tout le monde, sans token.
-
 ### En symlink, pour suivre les mises à jour
 
 Le CLI copie. Si tu préfères que les évolutions du dépôt te suivent toutes seules :

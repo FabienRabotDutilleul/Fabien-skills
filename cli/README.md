@@ -31,28 +31,20 @@ npx add-fabien-skills --list
 | `--ref <ref>` | branche ou tag du dépôt |
 | `--source <path>` | lit un dépôt local au lieu de GitHub |
 
-## Dépôt privé
+## Dépôts privés
 
-`Fabien-skills` est **privé** aujourd'hui. `raw.githubusercontent.com` renvoie donc 404 pour
-tout le monde, y compris toi, et `npx add-fabien-skills` ne peut rien installer en l'état.
+`Fabien-skills` est public, donc rien à configurer. Si tu pointes le CLI sur un dépôt privé —
+un fork interne via `--source owner/repo` — il bascule sur l'API GitHub authentifiée dès qu'il
+trouve un token portant `contents:read` :
 
-Deux sorties :
+```bash
+export GITHUB_TOKEN=$(gh auth token)
+npx add-fabien-skills --source owner/repo-prive
+```
 
-- **Rendre le dépôt public** — c'est ce qui fait marcher la commande pour n'importe qui, et la
-  seule option cohérente avec le fait de publier le CLI sur npm.
-- **Rester privé** — le CLI bascule alors sur l'API GitHub authentifiée dès qu'il trouve un
-  token :
-
-  ```bash
-  export GITHUB_TOKEN=$(gh auth token)
-  npx add-fabien-skills
-  ```
-
-  Le token doit porter `contents:read` sur le dépôt. Utile pour un usage interne, mais publier
-  sur npm un paquet que personne ne peut utiliser n'a pas grand sens.
-
-Le CLI distingue les deux causes possibles d'un 404 (dépôt inaccessible vs index pas encore
-poussé) et le dit, parce que le correctif n'est pas le même.
+Sans token, un dépôt privé se manifeste par un 404 indiscernable d'un index manquant. Le CLI
+interroge l'API pour trancher et annonce laquelle des deux causes s'applique, parce que le
+correctif n'est pas le même.
 
 ## Comment ça marche
 

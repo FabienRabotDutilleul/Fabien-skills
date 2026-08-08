@@ -12,7 +12,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "index": "node scripts/build-index.mjs",
