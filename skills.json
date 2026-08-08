@@ -1,0 +1,2449 @@
+{
+  "repo": "FabienRabotDutilleul/Fabien-skills",
+  "ref": "main",
+  "version": 1,
+  "count": 48,
+  "categories": [
+    {
+      "id": "agent-ops",
+      "description": "Configurer et cadrer les agents eux-mêmes",
+      "count": 6
+    },
+    {
+      "id": "engineering",
+      "description": "Concevoir, écrire, relire du code et le découper en travail",
+      "count": 15
+    },
+    {
+      "id": "kb",
+      "description": "Faire entrer du savoir dans une base lisible par agent",
+      "count": 10
+    },
+    {
+      "id": "productivity",
+      "description": "Durcir une idée, l'écrire, la dessiner, l'apprendre",
+      "count": 13
+    },
+    {
+      "id": "research",
+      "description": "Déléguer le travail de lecture",
+      "count": 3
+    },
+    {
+      "id": "windows&bash-tools",
+      "description": "Franchir la frontière WSL → Windows",
+      "count": 1
+    }
+  ],
+  "skills": [
+    {
+      "name": "ask-me",
+      "path": "agent-ops/ask-me",
+      "category": "agent-ops",
+      "group": null,
+      "description": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 20232,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 135
+        },
+        {
+          "path": "PHASE-BOUNDARIES.md",
+          "bytes": 4276
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 15821
+        }
+      ]
+    },
+    {
+      "name": "global-agent-guardrails",
+      "path": "agent-ops/global-agent-guardrails",
+      "category": "agent-ops",
+      "group": null,
+      "description": "One shared denylist of catastrophic shell commands (rm -rf on / or ~, dd/mkfs, sudo rm, fork bombs, curl|sh, git push --force, gh repo delete) enforced as a PreToolUse/pre-exec guard across every AI coding agent on the machine — Cursor, Claude Code, Codex, OpenCode, Pi, Hermes, Grok, Droid, Devin. Use when adding or tuning blocked-command patterns, wiring the guard into a new agent or a new machine, debugging why a command was (or was not) blocked, or when the user mentions command guard, guardrails, dangerous command hook, or PreToolUse safety.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [
+        {
+          "kind": "required",
+          "label": "à installer en premier sur une machine neuve"
+        }
+      ],
+      "setup": null,
+      "bytes": 7403,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 7403
+        }
+      ]
+    },
+    {
+      "name": "goal-loop",
+      "path": "agent-ops/goal-loop",
+      "category": "agent-ops",
+      "group": null,
+      "description": "Explain and write effective instructions for the `/goal` feature — the persistent self-checking agent loop (plan → act → test → review → iterate), available in agents like Codex, Claude Code, and Hermes Agent. Use when the user mentions `/goal`, \"goal loop\", \"Ralph loop\", wants to kick off a long-running autonomous agent run, asks how to write a goal prompt, or wants a one-paragraph goal instruction drafted.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 10128,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 10128
+        }
+      ]
+    },
+    {
+      "name": "setup-help",
+      "path": "agent-ops/setup-help",
+      "category": "agent-ops",
+      "group": null,
+      "description": "Walk the user through setting up anything step by step. Use when the user asks for help setting up, configuring, installing, or getting something working — \"help me set up X\", \"walk me through this\", \"setup-help\". Differentiator: gives one current step at a time, then always lists every remaining setup step after each response.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 2426,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 43
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2383
+        }
+      ]
+    },
+    {
+      "name": "setup-matt-pocock-skills",
+      "path": "agent-ops/setup-matt-pocock-skills",
+      "category": "agent-ops",
+      "group": null,
+      "description": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 19581,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 152
+        },
+        {
+          "path": "domain.md",
+          "bytes": 2045
+        },
+        {
+          "path": "issue-tracker-github.md",
+          "bytes": 3745
+        },
+        {
+          "path": "issue-tracker-gitlab.md",
+          "bytes": 3826
+        },
+        {
+          "path": "issue-tracker-local.md",
+          "bytes": 1846
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6922
+        },
+        {
+          "path": "triage-labels.md",
+          "bytes": 1045
+        }
+      ]
+    },
+    {
+      "name": "writing-for-agents",
+      "path": "agent-ops/writing-for-agents",
+      "category": "agent-ops",
+      "group": null,
+      "description": "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 13721,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 104
+        },
+        {
+          "path": "SKILL-MECHANICS.md",
+          "bytes": 2651
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 10966
+        }
+      ]
+    },
+    {
+      "name": "code-review",
+      "path": "engineering/code-review",
+      "category": "engineering",
+      "group": null,
+      "description": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 6840,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 100
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6740
+        }
+      ]
+    },
+    {
+      "name": "codebase-design",
+      "path": "engineering/codebase-design",
+      "category": "engineering",
+      "group": null,
+      "description": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 11861,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 102
+        },
+        {
+          "path": "DEEPENING.md",
+          "bytes": 2559
+        },
+        {
+          "path": "DESIGN-IT-TWICE.md",
+          "bytes": 2712
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6488
+        }
+      ]
+    },
+    {
+      "name": "diagnosing-bugs",
+      "path": "engineering/diagnosing-bugs",
+      "category": "engineering",
+      "group": null,
+      "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 9803,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 103
+        },
+        {
+          "path": "scripts/hitl-loop.template.sh",
+          "bytes": 1164
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 8536
+        }
+      ]
+    },
+    {
+      "name": "domain-modeling",
+      "path": "engineering/domain-modeling",
+      "category": "engineering",
+      "group": null,
+      "description": "Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 8593,
+      "files": [
+        {
+          "path": "ADR-FORMAT.md",
+          "bytes": 2766
+        },
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 101
+        },
+        {
+          "path": "CONTEXT-FORMAT.md",
+          "bytes": 2299
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3427
+        }
+      ]
+    },
+    {
+      "name": "git-worktree",
+      "path": "engineering/git-worktree",
+      "category": "engineering",
+      "group": null,
+      "description": "Use git worktrees to run multiple coding agents in parallel on one repo without collisions. Use when starting a task in a shared repo, when the user says \"worktree\", \"parallel agents\", \"one worktree per task\", or when agents keep overwriting each other's changes. Covers creating worktrees, making them as complete as the main checkout (.env files, dependencies, databases, ports), merging back, and cleanup.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 5765,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 43
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 5722
+        }
+      ]
+    },
+    {
+      "name": "impeccable",
+      "path": "engineering/impeccable",
+      "category": "engineering",
+      "group": null,
+      "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
+      "argumentHint": "[shape · audit|critique · animate|bolder|colorize|delight|layout|overdrive|quieter|typeset · adapt|clarify|distill · harden|onboard|optimize|polish · init|document|extract|live] [target]",
+      "disableModelInvocation": null,
+      "allowedTools": [
+        "Bash(npx impeccable *)",
+        "Bash(node .claude/skills/impeccable/scripts/*)"
+      ],
+      "license": "Apache 2.0",
+      "badges": [],
+      "setup": null,
+      "bytes": 3008776,
+      "files": [
+        {
+          "path": "reference/adapt.md",
+          "bytes": 10307
+        },
+        {
+          "path": "reference/adapt.native.md",
+          "bytes": 3910
+        },
+        {
+          "path": "reference/android.md",
+          "bytes": 3253
+        },
+        {
+          "path": "reference/animate.md",
+          "bytes": 4795
+        },
+        {
+          "path": "reference/audit.md",
+          "bytes": 7873
+        },
+        {
+          "path": "reference/audit.native.md",
+          "bytes": 8357
+        },
+        {
+          "path": "reference/bolder.md",
+          "bytes": 3208
+        },
+        {
+          "path": "reference/clarify.md",
+          "bytes": 4590
+        },
+        {
+          "path": "reference/colorize.md",
+          "bytes": 4537
+        },
+        {
+          "path": "reference/craft-floor.md",
+          "bytes": 3811
+        },
+        {
+          "path": "reference/craft.md",
+          "bytes": 555
+        },
+        {
+          "path": "reference/critique.md",
+          "bytes": 39912
+        },
+        {
+          "path": "reference/delight.md",
+          "bytes": 3716
+        },
+        {
+          "path": "reference/distill.md",
+          "bytes": 5610
+        },
+        {
+          "path": "reference/doctor.md",
+          "bytes": 4752
+        },
+        {
+          "path": "reference/document.md",
+          "bytes": 27422
+        },
+        {
+          "path": "reference/extract.md",
+          "bytes": 3338
+        },
+        {
+          "path": "reference/harden.md",
+          "bytes": 8539
+        },
+        {
+          "path": "reference/hooks.md",
+          "bytes": 11871
+        },
+        {
+          "path": "reference/init.md",
+          "bytes": 8777
+        },
+        {
+          "path": "reference/ios.md",
+          "bytes": 2975
+        },
+        {
+          "path": "reference/layout.md",
+          "bytes": 5159
+        },
+        {
+          "path": "reference/live-setup.md",
+          "bytes": 7422
+        },
+        {
+          "path": "reference/live.md",
+          "bytes": 35596
+        },
+        {
+          "path": "reference/new-work.md",
+          "bytes": 28500
+        },
+        {
+          "path": "reference/onboard.md",
+          "bytes": 7740
+        },
+        {
+          "path": "reference/operate.md",
+          "bytes": 4145
+        },
+        {
+          "path": "reference/optimize.md",
+          "bytes": 7614
+        },
+        {
+          "path": "reference/overdrive.md",
+          "bytes": 8812
+        },
+        {
+          "path": "reference/polish.md",
+          "bytes": 5200
+        },
+        {
+          "path": "reference/quieter.md",
+          "bytes": 4845
+        },
+        {
+          "path": "reference/routing.md",
+          "bytes": 2915
+        },
+        {
+          "path": "reference/shape.md",
+          "bytes": 3547
+        },
+        {
+          "path": "reference/typeset.md",
+          "bytes": 5254
+        },
+        {
+          "path": "reference/visualize.md",
+          "bytes": 10439
+        },
+        {
+          "path": "scripts/command-metadata.json",
+          "bytes": 7934
+        },
+        {
+          "path": "scripts/concept-seed.mjs",
+          "bytes": 27612
+        },
+        {
+          "path": "scripts/context-signals.mjs",
+          "bytes": 14376
+        },
+        {
+          "path": "scripts/context.mjs",
+          "bytes": 59832
+        },
+        {
+          "path": "scripts/critique-storage.mjs",
+          "bytes": 8128
+        },
+        {
+          "path": "scripts/detect-csp.mjs",
+          "bytes": 6761
+        },
+        {
+          "path": "scripts/detect.mjs",
+          "bytes": 620
+        },
+        {
+          "path": "scripts/detector/browser/injected/index.mjs",
+          "bytes": 81462
+        },
+        {
+          "path": "scripts/detector/cli/main.mjs",
+          "bytes": 19297
+        },
+        {
+          "path": "scripts/detector/design-system.mjs",
+          "bytes": 35110
+        },
+        {
+          "path": "scripts/detector/detect-antipatterns-browser.js",
+          "bytes": 366701
+        },
+        {
+          "path": "scripts/detector/detect-antipatterns.mjs",
+          "bytes": 1843
+        },
+        {
+          "path": "scripts/detector/engines/browser/detect-url.mjs",
+          "bytes": 14431
+        },
+        {
+          "path": "scripts/detector/engines/regex/detect-text.mjs",
+          "bytes": 35297
+        },
+        {
+          "path": "scripts/detector/engines/static-html/css-cascade.mjs",
+          "bytes": 43681
+        },
+        {
+          "path": "scripts/detector/engines/static-html/detect-html.mjs",
+          "bytes": 12028
+        },
+        {
+          "path": "scripts/detector/engines/visual/screenshot-contrast.mjs",
+          "bytes": 6529
+        },
+        {
+          "path": "scripts/detector/findings.mjs",
+          "bytes": 766
+        },
+        {
+          "path": "scripts/detector/node/file-system.mjs",
+          "bytes": 7805
+        },
+        {
+          "path": "scripts/detector/profile/profiler.mjs",
+          "bytes": 4550
+        },
+        {
+          "path": "scripts/detector/registry/antipatterns.mjs",
+          "bytes": 27900
+        },
+        {
+          "path": "scripts/detector/rules/checks.mjs",
+          "bytes": 252227
+        },
+        {
+          "path": "scripts/detector/shared/color.mjs",
+          "bytes": 4512
+        },
+        {
+          "path": "scripts/detector/shared/constants.mjs",
+          "bytes": 4675
+        },
+        {
+          "path": "scripts/detector/shared/fonts.mjs",
+          "bytes": 852
+        },
+        {
+          "path": "scripts/detector/shared/inline-ignores.mjs",
+          "bytes": 6194
+        },
+        {
+          "path": "scripts/detector/shared/page.mjs",
+          "bytes": 252
+        },
+        {
+          "path": "scripts/doctor.mjs",
+          "bytes": 11849
+        },
+        {
+          "path": "scripts/embed-prompt.mjs",
+          "bytes": 5985
+        },
+        {
+          "path": "scripts/generate-image.mjs",
+          "bytes": 9822
+        },
+        {
+          "path": "scripts/hook-admin.mjs",
+          "bytes": 29116
+        },
+        {
+          "path": "scripts/hook-before-edit.mjs",
+          "bytes": 18708
+        },
+        {
+          "path": "scripts/hook-lib.mjs",
+          "bytes": 83396
+        },
+        {
+          "path": "scripts/hook.mjs",
+          "bytes": 2687
+        },
+        {
+          "path": "scripts/lib/artifact-schema.mjs",
+          "bytes": 3896
+        },
+        {
+          "path": "scripts/lib/composition-catalog.mjs",
+          "bytes": 10249
+        },
+        {
+          "path": "scripts/lib/concept-catalog.mjs",
+          "bytes": 17792
+        },
+        {
+          "path": "scripts/lib/design-parser.mjs",
+          "bytes": 25824
+        },
+        {
+          "path": "scripts/lib/impeccable-config.mjs",
+          "bytes": 22691
+        },
+        {
+          "path": "scripts/lib/impeccable-paths.mjs",
+          "bytes": 4976
+        },
+        {
+          "path": "scripts/lib/is-generated.mjs",
+          "bytes": 2269
+        },
+        {
+          "path": "scripts/lib/provider.mjs",
+          "bytes": 332
+        },
+        {
+          "path": "scripts/lib/roll-selection.mjs",
+          "bytes": 17261
+        },
+        {
+          "path": "scripts/lib/staleness-deep.mjs",
+          "bytes": 20079
+        },
+        {
+          "path": "scripts/lib/staleness-notice.mjs",
+          "bytes": 6706
+        },
+        {
+          "path": "scripts/lib/staleness.mjs",
+          "bytes": 19463
+        },
+        {
+          "path": "scripts/lib/surface-briefs.mjs",
+          "bytes": 6206
+        },
+        {
+          "path": "scripts/lib/target-args.mjs",
+          "bytes": 1145
+        },
+        {
+          "path": "scripts/lib/target-slug.mjs",
+          "bytes": 1075
+        },
+        {
+          "path": "scripts/lib/template-extensions.mjs",
+          "bytes": 5457
+        },
+        {
+          "path": "scripts/live-accept.mjs",
+          "bytes": 36333
+        },
+        {
+          "path": "scripts/live-browser-dom.js",
+          "bytes": 4250
+        },
+        {
+          "path": "scripts/live-browser-session.js",
+          "bytes": 3297
+        },
+        {
+          "path": "scripts/live-browser.js",
+          "bytes": 500797
+        },
+        {
+          "path": "scripts/live-commit-manual-edits.mjs",
+          "bytes": 42166
+        },
+        {
+          "path": "scripts/live-complete.mjs",
+          "bytes": 4808
+        },
+        {
+          "path": "scripts/live-copy-edit-agent.mjs",
+          "bytes": 28868
+        },
+        {
+          "path": "scripts/live-discard-manual-edits.mjs",
+          "bytes": 1687
+        },
+        {
+          "path": "scripts/live-inject.mjs",
+          "bytes": 18536
+        },
+        {
+          "path": "scripts/live-insert.mjs",
+          "bytes": 10081
+        },
+        {
+          "path": "scripts/live-manual-edit-evidence.mjs",
+          "bytes": 11857
+        },
+        {
+          "path": "scripts/live-poll.mjs",
+          "bytes": 16099
+        },
+        {
+          "path": "scripts/live-resume.mjs",
+          "bytes": 6132
+        },
+        {
+          "path": "scripts/live-server.mjs",
+          "bytes": 67673
+        },
+        {
+          "path": "scripts/live-status.mjs",
+          "bytes": 2626
+        },
+        {
+          "path": "scripts/live-target.mjs",
+          "bytes": 934
+        },
+        {
+          "path": "scripts/live-wrap.mjs",
+          "bytes": 39116
+        },
+        {
+          "path": "scripts/live.mjs",
+          "bytes": 13443
+        },
+        {
+          "path": "scripts/live/accept-css.mjs",
+          "bytes": 22505
+        },
+        {
+          "path": "scripts/live/accept-verify.mjs",
+          "bytes": 2739
+        },
+        {
+          "path": "scripts/live/browser-script-parts.mjs",
+          "bytes": 2180
+        },
+        {
+          "path": "scripts/live/completion.mjs",
+          "bytes": 1444
+        },
+        {
+          "path": "scripts/live/event-validation.mjs",
+          "bytes": 9579
+        },
+        {
+          "path": "scripts/live/frameworks/astro.mjs",
+          "bytes": 1725
+        },
+        {
+          "path": "scripts/live/frameworks/detect-utils.mjs",
+          "bytes": 2102
+        },
+        {
+          "path": "scripts/live/frameworks/index.mjs",
+          "bytes": 5847
+        },
+        {
+          "path": "scripts/live/frameworks/journal.mjs",
+          "bytes": 7182
+        },
+        {
+          "path": "scripts/live/frameworks/nextjs.mjs",
+          "bytes": 1732
+        },
+        {
+          "path": "scripts/live/frameworks/nuxt.mjs",
+          "bytes": 5242
+        },
+        {
+          "path": "scripts/live/frameworks/script-src.mjs",
+          "bytes": 699
+        },
+        {
+          "path": "scripts/live/frameworks/static-html.mjs",
+          "bytes": 656
+        },
+        {
+          "path": "scripts/live/frameworks/sveltekit.mjs",
+          "bytes": 1801
+        },
+        {
+          "path": "scripts/live/frameworks/tag-strategy.mjs",
+          "bytes": 10866
+        },
+        {
+          "path": "scripts/live/frameworks/tanstack-start.mjs",
+          "bytes": 1646
+        },
+        {
+          "path": "scripts/live/frameworks/vite-generic.mjs",
+          "bytes": 1324
+        },
+        {
+          "path": "scripts/live/generation-preflight.mjs",
+          "bytes": 5937
+        },
+        {
+          "path": "scripts/live/insert-ui.mjs",
+          "bytes": 15664
+        },
+        {
+          "path": "scripts/live/instructions.mjs",
+          "bytes": 13216
+        },
+        {
+          "path": "scripts/live/manual-apply.mjs",
+          "bytes": 34898
+        },
+        {
+          "path": "scripts/live/manual-edit-routes.mjs",
+          "bytes": 14933
+        },
+        {
+          "path": "scripts/live/manual-edits-buffer.mjs",
+          "bytes": 5112
+        },
+        {
+          "path": "scripts/live/poll-lanes.mjs",
+          "bytes": 759
+        },
+        {
+          "path": "scripts/live/roots.mjs",
+          "bytes": 20887
+        },
+        {
+          "path": "scripts/live/session-store.mjs",
+          "bytes": 22916
+        },
+        {
+          "path": "scripts/live/source-lock.mjs",
+          "bytes": 3707
+        },
+        {
+          "path": "scripts/live/source-search.mjs",
+          "bytes": 4349
+        },
+        {
+          "path": "scripts/live/svelte-ast.mjs",
+          "bytes": 38596
+        },
+        {
+          "path": "scripts/live/svelte-component.mjs",
+          "bytes": 50760
+        },
+        {
+          "path": "scripts/live/sveltekit-adapter.mjs",
+          "bytes": 11395
+        },
+        {
+          "path": "scripts/live/tanstack-adapter.mjs",
+          "bytes": 9756
+        },
+        {
+          "path": "scripts/live/ui-core.mjs",
+          "bytes": 5541
+        },
+        {
+          "path": "scripts/live/vocabulary.mjs",
+          "bytes": 7191
+        },
+        {
+          "path": "scripts/modern-screenshot.umd.js",
+          "bytes": 29290
+        },
+        {
+          "path": "scripts/palette.mjs",
+          "bytes": 56787
+        },
+        {
+          "path": "scripts/pin.mjs",
+          "bytes": 6501
+        },
+        {
+          "path": "scripts/serve-question.mjs",
+          "bytes": 61693
+        },
+        {
+          "path": "scripts/surface-brief.mjs",
+          "bytes": 2517
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 10744
+        }
+      ]
+    },
+    {
+      "name": "implement",
+      "path": "engineering/implement",
+      "category": "engineering",
+      "group": null,
+      "description": "Implement a piece of work based on a spec or set of tickets.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 572,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 139
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 433
+        }
+      ]
+    },
+    {
+      "name": "improve-codebase-architecture",
+      "path": "engineering/improve-codebase-architecture",
+      "category": "engineering",
+      "group": null,
+      "description": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 12890,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 166
+        },
+        {
+          "path": "HTML-REPORT.md",
+          "bytes": 6685
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6039
+        }
+      ]
+    },
+    {
+      "name": "prototype",
+      "path": "engineering/prototype",
+      "category": "engineering",
+      "group": null,
+      "description": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 15495,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 100
+        },
+        {
+          "path": "LOGIC.md",
+          "bytes": 5637
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2799
+        },
+        {
+          "path": "UI.md",
+          "bytes": 6959
+        }
+      ]
+    },
+    {
+      "name": "qa",
+      "path": "engineering/qa",
+      "category": "engineering",
+      "group": null,
+      "description": "Interactive QA session where user reports bugs or issues conversationally, and the agent files GitHub issues. Explores the codebase in the background for context and domain language. Use when user wants to report bugs, do QA, file issues conversationally, or mentions \"QA session\".",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 5056,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 91
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 4965
+        }
+      ]
+    },
+    {
+      "name": "tdd",
+      "path": "engineering/tdd",
+      "category": "engineering",
+      "group": null,
+      "description": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 7350,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 87
+        },
+        {
+          "path": "mocking.md",
+          "bytes": 1481
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3568
+        },
+        {
+          "path": "tests.md",
+          "bytes": 2214
+        }
+      ]
+    },
+    {
+      "name": "to-spec",
+      "path": "engineering/to-spec",
+      "category": "engineering",
+      "group": null,
+      "description": "Turn the current conversation into a spec and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 3208,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 135
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3073
+        }
+      ]
+    },
+    {
+      "name": "to-tickets",
+      "path": "engineering/to-tickets",
+      "category": "engineering",
+      "group": null,
+      "description": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker — edges as text in one file per ticket locally, or native blocking links on a real tracker.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 5853,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 146
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 5707
+        }
+      ]
+    },
+    {
+      "name": "triage",
+      "path": "engineering/triage",
+      "category": "engineering",
+      "group": null,
+      "description": "Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 19385,
+      "files": [
+        {
+          "path": "AGENT-BRIEF.md",
+          "bytes": 7972
+        },
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 135
+        },
+        {
+          "path": "OUT-OF-SCOPE.md",
+          "bytes": 4712
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 6566
+        }
+      ]
+    },
+    {
+      "name": "wayfinder",
+      "path": "engineering/wayfinder",
+      "category": "engineering",
+      "group": null,
+      "description": "Plan a huge chunk of work — more than one agent session can hold — as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 12030,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 144
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 11886
+        }
+      ]
+    },
+    {
+      "name": "extract-pdf-pictures",
+      "path": "kb/ingest/extract-pdf-pictures",
+      "category": "kb",
+      "group": "ingest",
+      "description": "Convertir un PDF de photos/scans en Markdown canonique lisible par agent — chaque page rendue en image et lue en vision, l'image fait foi — vers tmp_output/.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 4043,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 4043
+        }
+      ]
+    },
+    {
+      "name": "ingest_docx",
+      "path": "kb/ingest/ingest_docx",
+      "category": "kb",
+      "group": "ingest",
+      "description": "Convertir un document Word en Markdown canonique lisible par agent — transcription à la lettre, couche invisible comprise, vers tmp_output/.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 4724,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 4724
+        }
+      ]
+    },
+    {
+      "name": "ingest_pptx",
+      "path": "kb/ingest/ingest_pptx",
+      "category": "kb",
+      "group": "ingest",
+      "description": "Convertir une présentation PowerPoint en Markdown canonique lisible par agent — transcription à la lettre, sans perte, vers tmp_output/.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 4361,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 4361
+        }
+      ]
+    },
+    {
+      "name": "ingest_xlsx",
+      "path": "kb/ingest/ingest_xlsx",
+      "category": "kb",
+      "group": "ingest",
+      "description": "Convertir un classeur Excel (logigrammes, processus, tableaux) en Markdown canonique lisible par agent — transcription à la lettre, sans perte, vers tmp_output/.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 5092,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 5092
+        }
+      ]
+    },
+    {
+      "name": "classify_output",
+      "path": "kb/pipeline/classify_output",
+      "category": "kb",
+      "group": "pipeline",
+      "description": "Classer une transcription de tmp_output/ dans docs/refs/for_agents/ et son original d'inbox/ dans docs/refs/for_human/ — arborescence miroir + enregistrement au registre index.md.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 3971,
+      "files": [
+        {
+          "path": "classify.sh",
+          "bytes": 1183,
+          "exec": true
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2788
+        }
+      ]
+    },
+    {
+      "name": "inject_into_knowledge_base",
+      "path": "kb/pipeline/inject_into_knowledge_base",
+      "category": "kb",
+      "group": "pipeline",
+      "description": "Diffuser un document déjà classé de docs/refs/ vers docs/kb/ — pages atomiques reliées, provenance tracée, contradictions signalées, lint à 0 erreur.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 9854,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 9854
+        }
+      ]
+    },
+    {
+      "name": "channel-to-kb",
+      "path": "kb/youtube/channel-to-kb",
+      "category": "kb",
+      "group": "youtube",
+      "description": "Build an OKF (Open Knowledge Format) knowledge base from any YouTube channel. Uses Google's OKF standard so any AI can read the output with zero setup. Free, no API key. Uses pytubefix + youtube_transcript_api. Invoke with /channel-to-kb @ChannelHandle",
+      "argumentHint": "<@ChannelHandle or channel-URL>",
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 9886,
+      "files": [
+        {
+          "path": "scripts/fetch_transcripts.py",
+          "bytes": 6654
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3232
+        }
+      ]
+    },
+    {
+      "name": "channel-to-kb-supadata",
+      "path": "kb/youtube/channel-to-kb-supadata",
+      "category": "kb",
+      "group": "youtube",
+      "description": "Build an OKF (Open Knowledge Format) knowledge base from any YouTube channel. Uses Google's OKF standard so any AI can read the output with zero setup. Uses Supadata (managed API, paid). Invoke with /channel-to-kb-supadata @ChannelHandle",
+      "argumentHint": "<@ChannelHandle or channel-URL>",
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [
+        {
+          "kind": "cost",
+          "label": "API managée payante — les autres channel-to-kb* sont gratuits"
+        }
+      ],
+      "setup": null,
+      "bytes": 10389,
+      "files": [
+        {
+          "path": "scripts/fetch_transcripts.py",
+          "bytes": 6976
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3413
+        }
+      ]
+    },
+    {
+      "name": "channel-to-kb-ytdlp",
+      "path": "kb/youtube/channel-to-kb-ytdlp",
+      "category": "kb",
+      "group": "youtube",
+      "description": "Build an OKF (Open Knowledge Format) knowledge base from any YouTube channel. Uses Google's OKF standard so any AI can read the output with zero setup. Free, no API key. Uses yt-dlp (most reliable). Invoke with /channel-to-kb-ytdlp @ChannelHandle",
+      "argumentHint": "<@ChannelHandle or channel-URL>",
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 11231,
+      "files": [
+        {
+          "path": "scripts/fetch_transcripts.py",
+          "bytes": 7935
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 3296
+        }
+      ]
+    },
+    {
+      "name": "watch",
+      "path": "kb/youtube/watch",
+      "category": "kb",
+      "group": "youtube",
+      "description": "Watch a video (URL or local path). Downloads with yt-dlp, extracts auto-scaled frames with ffmpeg, pulls the transcript from captions (or Whisper API fallback), and hands the result to Claude so it can answer questions about what's in the video.",
+      "argumentHint": "<video-url-or-path> [question]",
+      "disableModelInvocation": null,
+      "allowedTools": "Bash, Read, AskUserQuestion",
+      "license": "MIT",
+      "badges": [
+        {
+          "kind": "cost",
+          "label": "clé API Whisper — coûte de l'argent et beaucoup de tokens"
+        }
+      ],
+      "setup": null,
+      "bytes": 110196,
+      "files": [
+        {
+          "path": ".skillignore",
+          "bytes": 168
+        },
+        {
+          "path": "README.md",
+          "bytes": 4417
+        },
+        {
+          "path": "scripts/build-skill.sh",
+          "bytes": 1391,
+          "exec": true
+        },
+        {
+          "path": "scripts/config.py",
+          "bytes": 2108
+        },
+        {
+          "path": "scripts/download.py",
+          "bytes": 5454,
+          "exec": true
+        },
+        {
+          "path": "scripts/frames.py",
+          "bytes": 26346,
+          "exec": true
+        },
+        {
+          "path": "scripts/setup.py",
+          "bytes": 12080,
+          "exec": true
+        },
+        {
+          "path": "scripts/transcribe.py",
+          "bytes": 2897,
+          "exec": true
+        },
+        {
+          "path": "scripts/watch.py",
+          "bytes": 16482,
+          "exec": true
+        },
+        {
+          "path": "scripts/whisper.py",
+          "bytes": 17046,
+          "exec": true
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 21807
+        }
+      ]
+    },
+    {
+      "name": "excalidraw-diagram",
+      "path": "productivity/diagrams/excalidraw-diagram",
+      "category": "productivity",
+      "group": "diagrams",
+      "description": "Create Excalidraw diagram JSON files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": "uv sync",
+      "bytes": 71158,
+      "files": [
+        {
+          "path": ".gitignore",
+          "bytes": 34
+        },
+        {
+          "path": "README.md",
+          "bytes": 2872
+        },
+        {
+          "path": "references/color-palette.md",
+          "bytes": 2116
+        },
+        {
+          "path": "references/element-templates.md",
+          "bytes": 4088
+        },
+        {
+          "path": "references/json-schema.md",
+          "bytes": 1958
+        },
+        {
+          "path": "references/pyproject.toml",
+          "bytes": 127
+        },
+        {
+          "path": "references/render_excalidraw.py",
+          "bytes": 6630
+        },
+        {
+          "path": "references/render_template.html",
+          "bytes": 1705
+        },
+        {
+          "path": "references/uv.lock",
+          "bytes": 27146
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 24482
+        }
+      ]
+    },
+    {
+      "name": "mermaid-diagram",
+      "path": "productivity/diagrams/mermaid-diagram",
+      "category": "productivity",
+      "group": "diagrams",
+      "description": "Create polished Mermaid diagrams that argue visually inside markdown docs. Use when the user wants a diagram embedded in a .md file, mentions mermaid, or wants a fast, token-light alternative to excalidraw-diagram.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": "npm i",
+      "bytes": 81028,
+      "files": [
+        {
+          "path": "references/other-diagrams.md",
+          "bytes": 3233
+        },
+        {
+          "path": "references/package-lock.json",
+          "bytes": 68930
+        },
+        {
+          "path": "references/package.json",
+          "bytes": 154
+        },
+        {
+          "path": "references/validate.mjs",
+          "bytes": 1453
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 7258
+        }
+      ]
+    },
+    {
+      "name": "quiz",
+      "path": "productivity/learning/quiz",
+      "category": "productivity",
+      "group": "learning",
+      "description": "Séance de quiz adaptatif (QCM + questions ouvertes) sur le corpus ASAP_Agent.",
+      "argumentHint": "Thème à cibler (optionnel), ex. « scoring », « sécurité »",
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 8635,
+      "files": [
+        {
+          "path": "LEDGER-FORMAT.md",
+          "bytes": 3830
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 4805
+        }
+      ]
+    },
+    {
+      "name": "teach",
+      "path": "productivity/learning/teach",
+      "category": "productivity",
+      "group": "learning",
+      "description": "Teach the user a new skill or concept, within this workspace.",
+      "argumentHint": "What would you like to learn about?",
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 18033,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 139
+        },
+        {
+          "path": "GLOSSARY-FORMAT.md",
+          "bytes": 2131
+        },
+        {
+          "path": "LEARNING-RECORD-FORMAT.md",
+          "bytes": 2777
+        },
+        {
+          "path": "MISSION-FORMAT.md",
+          "bytes": 1553
+        },
+        {
+          "path": "RESOURCES-FORMAT.md",
+          "bytes": 1926
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 9507
+        }
+      ]
+    },
+    {
+      "name": "decisions",
+      "path": "productivity/thinking/decisions",
+      "category": "productivity",
+      "group": "thinking",
+      "description": "Ask the agent to list all choices it made during the current work that it is not confident of. Manual-only; invoke with /decisions.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 724,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 43
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 681
+        }
+      ]
+    },
+    {
+      "name": "grill-me",
+      "path": "productivity/thinking/grill-me",
+      "category": "productivity",
+      "group": "thinking",
+      "description": "A relentless interview to sharpen a plan or design.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 284,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 137
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 147
+        }
+      ]
+    },
+    {
+      "name": "grill-with-docs",
+      "path": "productivity/thinking/grill-with-docs",
+      "category": "productivity",
+      "group": "thinking",
+      "description": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 390,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 145
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 245
+        }
+      ]
+    },
+    {
+      "name": "grilling",
+      "path": "productivity/thinking/grilling",
+      "category": "productivity",
+      "group": "thinking",
+      "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 1976,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 105
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 1871
+        }
+      ]
+    },
+    {
+      "name": "brain-to-docs",
+      "path": "productivity/writing/brain-to-docs",
+      "category": "productivity",
+      "group": "writing",
+      "description": "Use when the user wants to extract project vision, decisions, and preferences from his head into clear documentation (README + ADRs) through a back-and-forth Q&A loop. Triggers on \"brain-to-docs\", \"build out the docs\", \"extract the vision\", \"let's document this project\".",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 1795,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 1795
+        }
+      ]
+    },
+    {
+      "name": "handoff",
+      "path": "productivity/writing/handoff",
+      "category": "productivity",
+      "group": "writing",
+      "description": "Compact the current conversation into a handoff document for another agent to pick up.",
+      "argumentHint": "What will the next session be used for?",
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 1020,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 141
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 879
+        }
+      ]
+    },
+    {
+      "name": "remind",
+      "path": "productivity/writing/remind",
+      "category": "productivity",
+      "group": "writing",
+      "description": "Rewrite the last response simpler and shorter in plain English, prefixed with a 3-5 sentence TLDR of the conversation so far. Manual-only, invoked as /remind.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 1083,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 43
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 1040
+        }
+      ]
+    },
+    {
+      "name": "to-questionnaire",
+      "path": "productivity/writing/to-questionnaire",
+      "category": "productivity",
+      "group": "writing",
+      "description": "Turn a decision you can't fully answer into a questionnaire for someone else to fill in.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 3078,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 157
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2921
+        }
+      ]
+    },
+    {
+      "name": "wait-what",
+      "path": "productivity/writing/wait-what",
+      "category": "productivity",
+      "group": "writing",
+      "description": "Stop. That last message did not land — re-pitch it.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 467,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 142
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 325
+        }
+      ]
+    },
+    {
+      "name": "last30days",
+      "path": "research/last30days",
+      "category": "research",
+      "group": null,
+      "description": "Research what people actually say about any topic in the last 30 days. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web. Includes a doctor health check to diagnose broken or missing sources.",
+      "argumentHint": "last30days nvidia earnings reaction | last30days AI video tools | last30days what users want in react",
+      "disableModelInvocation": null,
+      "allowedTools": "Bash, Read, Write, AskUserQuestion, WebSearch",
+      "license": "MIT",
+      "badges": [
+        {
+          "kind": "sandbox",
+          "label": "lit du web arbitraire — prompt injection, à lancer en sandbox"
+        }
+      ],
+      "setup": "npm i",
+      "bytes": 16676637,
+      "files": [
+        {
+          "path": ".skillignore",
+          "bytes": 438
+        },
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 448
+        },
+        {
+          "path": "assets/aging-portrait.jpeg",
+          "bytes": 2817207
+        },
+        {
+          "path": "assets/claude-code-rap.mp3",
+          "bytes": 2354231
+        },
+        {
+          "path": "assets/dog-as-human.png",
+          "bytes": 2460679
+        },
+        {
+          "path": "assets/dog-original.jpeg",
+          "bytes": 4014063
+        },
+        {
+          "path": "assets/swimmom-mockup.jpeg",
+          "bytes": 2764821
+        },
+        {
+          "path": "references/save-html-brief.md",
+          "bytes": 14826
+        },
+        {
+          "path": "scripts/briefing.py",
+          "bytes": 8707
+        },
+        {
+          "path": "scripts/build-skill.sh",
+          "bytes": 1330,
+          "exec": true
+        },
+        {
+          "path": "scripts/compare.sh",
+          "bytes": 2229,
+          "exec": true
+        },
+        {
+          "path": "scripts/evaluate_search_quality.py",
+          "bytes": 21741
+        },
+        {
+          "path": "scripts/last30days.py",
+          "bytes": 153563
+        },
+        {
+          "path": "scripts/lib/__init__.py",
+          "bytes": 29
+        },
+        {
+          "path": "scripts/lib/arxiv.py",
+          "bytes": 11897
+        },
+        {
+          "path": "scripts/lib/backends.py",
+          "bytes": 22302
+        },
+        {
+          "path": "scripts/lib/bird_x.py",
+          "bytes": 26115
+        },
+        {
+          "path": "scripts/lib/bluesky.py",
+          "bytes": 12119
+        },
+        {
+          "path": "scripts/lib/categories.py",
+          "bytes": 7973
+        },
+        {
+          "path": "scripts/lib/chrome_cookies.py",
+          "bytes": 17350
+        },
+        {
+          "path": "scripts/lib/cjk.py",
+          "bytes": 4843
+        },
+        {
+          "path": "scripts/lib/cluster.py",
+          "bytes": 9379
+        },
+        {
+          "path": "scripts/lib/competitors.py",
+          "bytes": 7695
+        },
+        {
+          "path": "scripts/lib/cookie_extract.py",
+          "bytes": 19321
+        },
+        {
+          "path": "scripts/lib/corpus.py",
+          "bytes": 15797
+        },
+        {
+          "path": "scripts/lib/dates.py",
+          "bytes": 4722
+        },
+        {
+          "path": "scripts/lib/dedupe.py",
+          "bytes": 3973
+        },
+        {
+          "path": "scripts/lib/digg.py",
+          "bytes": 14280
+        },
+        {
+          "path": "scripts/lib/discovery_handoff.py",
+          "bytes": 38117
+        },
+        {
+          "path": "scripts/lib/doctor.py",
+          "bytes": 66463
+        },
+        {
+          "path": "scripts/lib/dripstack.py",
+          "bytes": 8141
+        },
+        {
+          "path": "scripts/lib/entity_extract.py",
+          "bytes": 5779
+        },
+        {
+          "path": "scripts/lib/env.py",
+          "bytes": 52716
+        },
+        {
+          "path": "scripts/lib/fanout.py",
+          "bytes": 3357
+        },
+        {
+          "path": "scripts/lib/feed.py",
+          "bytes": 2374
+        },
+        {
+          "path": "scripts/lib/freshness.py",
+          "bytes": 21864
+        },
+        {
+          "path": "scripts/lib/fusion.py",
+          "bytes": 8553
+        },
+        {
+          "path": "scripts/lib/github.py",
+          "bytes": 47678
+        },
+        {
+          "path": "scripts/lib/grounding.py",
+          "bytes": 13708
+        },
+        {
+          "path": "scripts/lib/hackernews.py",
+          "bytes": 13935
+        },
+        {
+          "path": "scripts/lib/health.py",
+          "bytes": 17123
+        },
+        {
+          "path": "scripts/lib/hiring_signals.py",
+          "bytes": 12025
+        },
+        {
+          "path": "scripts/lib/hosted.py",
+          "bytes": 11807
+        },
+        {
+          "path": "scripts/lib/html_publish.py",
+          "bytes": 3452
+        },
+        {
+          "path": "scripts/lib/html_render.py",
+          "bytes": 27152
+        },
+        {
+          "path": "scripts/lib/http.py",
+          "bytes": 33069
+        },
+        {
+          "path": "scripts/lib/instagram.py",
+          "bytes": 22386
+        },
+        {
+          "path": "scripts/lib/jobs.py",
+          "bytes": 26922
+        },
+        {
+          "path": "scripts/lib/library_index.py",
+          "bytes": 16366
+        },
+        {
+          "path": "scripts/lib/library.py",
+          "bytes": 10230
+        },
+        {
+          "path": "scripts/lib/linkedin.py",
+          "bytes": 12408
+        },
+        {
+          "path": "scripts/lib/log.py",
+          "bytes": 1286
+        },
+        {
+          "path": "scripts/lib/normalize.py",
+          "bytes": 31465
+        },
+        {
+          "path": "scripts/lib/permission_preflight.py",
+          "bytes": 9465
+        },
+        {
+          "path": "scripts/lib/perplexity.py",
+          "bytes": 25308
+        },
+        {
+          "path": "scripts/lib/pinterest.py",
+          "bytes": 5021
+        },
+        {
+          "path": "scripts/lib/pipeline.py",
+          "bytes": 173629
+        },
+        {
+          "path": "scripts/lib/planner.py",
+          "bytes": 43742
+        },
+        {
+          "path": "scripts/lib/polymarket.py",
+          "bytes": 41806
+        },
+        {
+          "path": "scripts/lib/preflight.py",
+          "bytes": 4541
+        },
+        {
+          "path": "scripts/lib/prescriptions.py",
+          "bytes": 11888
+        },
+        {
+          "path": "scripts/lib/providers.py",
+          "bytes": 12785
+        },
+        {
+          "path": "scripts/lib/quality_nudge.py",
+          "bytes": 16991
+        },
+        {
+          "path": "scripts/lib/query.py",
+          "bytes": 7694
+        },
+        {
+          "path": "scripts/lib/reddit_arctic.py",
+          "bytes": 3733
+        },
+        {
+          "path": "scripts/lib/reddit_enrich.py",
+          "bytes": 9535
+        },
+        {
+          "path": "scripts/lib/reddit_keyless.py",
+          "bytes": 14053
+        },
+        {
+          "path": "scripts/lib/reddit_listing.py",
+          "bytes": 9556
+        },
+        {
+          "path": "scripts/lib/reddit_public.py",
+          "bytes": 9544
+        },
+        {
+          "path": "scripts/lib/reddit_rss.py",
+          "bytes": 8110
+        },
+        {
+          "path": "scripts/lib/reddit_shreddit.py",
+          "bytes": 6478
+        },
+        {
+          "path": "scripts/lib/reddit.py",
+          "bytes": 28868
+        },
+        {
+          "path": "scripts/lib/registers.py",
+          "bytes": 3574
+        },
+        {
+          "path": "scripts/lib/relevance.py",
+          "bytes": 7777
+        },
+        {
+          "path": "scripts/lib/render.py",
+          "bytes": 134021
+        },
+        {
+          "path": "scripts/lib/rerank.py",
+          "bytes": 38620
+        },
+        {
+          "path": "scripts/lib/resolve.py",
+          "bytes": 14858
+        },
+        {
+          "path": "scripts/lib/safari_cookies.py",
+          "bytes": 5698
+        },
+        {
+          "path": "scripts/lib/schema.py",
+          "bytes": 36147
+        },
+        {
+          "path": "scripts/lib/setup_wizard.py",
+          "bytes": 45550
+        },
+        {
+          "path": "scripts/lib/signals.py",
+          "bytes": 13687
+        },
+        {
+          "path": "scripts/lib/skill_meta.py",
+          "bytes": 1223
+        },
+        {
+          "path": "scripts/lib/snippet.py",
+          "bytes": 1560
+        },
+        {
+          "path": "scripts/lib/stocktwits.py",
+          "bytes": 15390
+        },
+        {
+          "path": "scripts/lib/subproc.py",
+          "bytes": 3914
+        },
+        {
+          "path": "scripts/lib/techmeme.py",
+          "bytes": 10527
+        },
+        {
+          "path": "scripts/lib/threads.py",
+          "bytes": 6818
+        },
+        {
+          "path": "scripts/lib/tiktok.py",
+          "bytes": 20401
+        },
+        {
+          "path": "scripts/lib/topic_shape.py",
+          "bytes": 14345
+        },
+        {
+          "path": "scripts/lib/transcribe.py",
+          "bytes": 8221
+        },
+        {
+          "path": "scripts/lib/trustpilot.py",
+          "bytes": 21607
+        },
+        {
+          "path": "scripts/lib/truthsocial.py",
+          "bytes": 5417
+        },
+        {
+          "path": "scripts/lib/ui.py",
+          "bytes": 26526
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/bird-search.mjs",
+          "bytes": 3998
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/cookies.js",
+          "bytes": 8153
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/features.json",
+          "bytes": 523
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/paginate-cursor.js",
+          "bytes": 1225
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/query-ids.json",
+          "bytes": 815
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/runtime-features.js",
+          "bytes": 5036
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/runtime-query-ids.js",
+          "bytes": 9424
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-base.js",
+          "bytes": 4853
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-constants.js",
+          "bytes": 2535
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-features.js",
+          "bytes": 18400
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-search.js",
+          "bytes": 7310
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-types.js",
+          "bytes": 59
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/lib/twitter-client-utils.js",
+          "bytes": 19169
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/LICENSE",
+          "bytes": 1074
+        },
+        {
+          "path": "scripts/lib/vendor/bird-search/package.json",
+          "bytes": 331
+        },
+        {
+          "path": "scripts/lib/web_fetch_keyless.py",
+          "bytes": 3429
+        },
+        {
+          "path": "scripts/lib/web_search_keyless.py",
+          "bytes": 8476
+        },
+        {
+          "path": "scripts/lib/xai_x.py",
+          "bytes": 7513
+        },
+        {
+          "path": "scripts/lib/xiaohongshu_api.py",
+          "bytes": 5321
+        },
+        {
+          "path": "scripts/lib/xquik.py",
+          "bytes": 14000
+        },
+        {
+          "path": "scripts/lib/xurl_x.py",
+          "bytes": 9794
+        },
+        {
+          "path": "scripts/lib/youtube_yt.py",
+          "bytes": 66625
+        },
+        {
+          "path": "scripts/setup-keychain.sh",
+          "bytes": 3265,
+          "exec": true
+        },
+        {
+          "path": "scripts/setup-pass.sh",
+          "bytes": 3575,
+          "exec": true
+        },
+        {
+          "path": "scripts/store.py",
+          "bytes": 43769
+        },
+        {
+          "path": "scripts/test_device_auth.py",
+          "bytes": 3943
+        },
+        {
+          "path": "scripts/test-v1-vs-v2.sh",
+          "bytes": 5918,
+          "exec": true
+        },
+        {
+          "path": "scripts/verify_v3.py",
+          "bytes": 6168
+        },
+        {
+          "path": "scripts/watchlist.py",
+          "bytes": 10613
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 222241
+        }
+      ]
+    },
+    {
+      "name": "research",
+      "path": "research/research",
+      "category": "research",
+      "group": null,
+      "description": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
+      "argumentHint": null,
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [
+        {
+          "kind": "sandbox",
+          "label": "lit du web arbitraire — prompt injection, à lancer en sandbox"
+        }
+      ],
+      "setup": null,
+      "bytes": 893,
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "bytes": 94
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 799
+        }
+      ]
+    },
+    {
+      "name": "storm-research",
+      "path": "research/storm-research",
+      "category": "research",
+      "group": null,
+      "description": "Use when someone asks to run Storm Research, use the storm-research skill, run the STORM method on a topic, says \"storm research this\" / \"storm report on X\" / \"give me a STORM briefing on X\", or wants a multi-perspective, citation-verified HTML research briefing on a topic. Runs a 4-phase pipeline: five expert lenses (Practitioner, Academic, Skeptic, Economist, Historian) -> contradiction map -> synthesized HTML report -> adversarial peer review + primary-source verification. Best for topics where multiple viewpoints and fact-checked claims matter; overkill for a simple factual lookup.",
+      "argumentHint": "[topic to research]",
+      "disableModelInvocation": null,
+      "allowedTools": null,
+      "license": null,
+      "badges": [
+        {
+          "kind": "sandbox",
+          "label": "lit du web arbitraire — prompt injection, à lancer en sandbox"
+        }
+      ],
+      "setup": null,
+      "bytes": 30142,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "bytes": 11693
+        },
+        {
+          "path": "storm-research-report-template.html",
+          "bytes": 18449
+        }
+      ]
+    },
+    {
+      "name": "anti-sleep",
+      "path": "windows&bash-tools/anti-sleep",
+      "category": "windows&bash-tools",
+      "group": null,
+      "description": "Keep the Windows machine awake from WSL for a set duration or while a process runs.",
+      "argumentHint": null,
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [],
+      "setup": null,
+      "bytes": 20627,
+      "files": [
+        {
+          "path": "PROBE.md",
+          "bytes": 2358
+        },
+        {
+          "path": "scripts/anti-sleep.sh",
+          "bytes": 7664,
+          "exec": true
+        },
+        {
+          "path": "scripts/keepawake.ps1",
+          "bytes": 1563
+        },
+        {
+          "path": "scripts/probe-loop.ps1",
+          "bytes": 535
+        },
+        {
+          "path": "scripts/probe-loop.sh",
+          "bytes": 325,
+          "exec": true
+        },
+        {
+          "path": "scripts/sleep-probe.sh",
+          "bytes": 5299,
+          "exec": true
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 2883
+        }
+      ]
+    }
+  ]
+}

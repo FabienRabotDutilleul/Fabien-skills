@@ -52,10 +52,27 @@ chacun de ses skills.
 
 ## Installation
 
-Un skill est un dossier contenant un `SKILL.md`. Pour l'activer, il faut qu'il soit visible
-depuis `~/.claude/skills/` (global, disponible partout) ou `<projet>/.claude/skills/` (local au
-projet). Le plus simple est de symlinker plutôt que copier — les mises à jour du dépôt suivent
-toutes seules :
+```bash
+npx add-fabien-skills
+```
+
+Un picker s'ouvre : tu choisis les skills, où les poser (`~/.claude/skills/` pour tous tes
+projets, `<projet>/.claude/skills/` pour un seul), et si l'agent a le droit de les déclencher
+tout seul. Rien à cloner, rien à installer. Il annonce aussi ce qui coûte de l'argent, ce qui
+doit tourner en sandbox et ce qui demande un `uv sync`/`npm i` — **avant** d'écrire.
+
+En non interactif :
+
+```bash
+npx add-fabien-skills -s tdd,code-review -t local
+npx add-fabien-skills --list
+```
+
+Le détail des options et le fonctionnement sont dans [`cli/`](cli/).
+
+### En symlink, pour suivre les mises à jour
+
+Le CLI copie. Si tu préfères que les évolutions du dépôt te suivent toutes seules :
 
 ```bash
 git clone https://github.com/FabienRabotDutilleul/Fabien-skills.git ~/dev/Fabien-skills

@@ -1,0 +1,41 @@
+{
+  "name": "add-fabien-skills",
+  "version": "0.1.0",
+  "description": "Installe les skills de Fabien-skills dans Claude Code, en une commande.",
+  "type": "module",
+  "bin": {
+    "add-fabien-skills": "./bin/add-fabien-skills.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "index": "node scripts/build-index.mjs",
+    "index:check": "node scripts/build-index.mjs --check",
+    "test": "node --test 'test/*.test.mjs'",
+    "start": "node bin/add-fabien-skills.mjs --source .."
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "agent-skills",
+    "skills",
+    "cli"
+  ],
+  "author": "Fabien Pineau",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabienRabotDutilleul/Fabien-skills.git",
+    "directory": "cli"
+  },
+  "homepage": "https://github.com/FabienRabotDutilleul/Fabien-skills#readme",
+  "devDependencies": {
+    "yaml": "^2.5.0"
+  }
+}
