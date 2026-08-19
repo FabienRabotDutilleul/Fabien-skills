@@ -1,21 +1,22 @@
 # Ledger — format et sémantique
 
-`quizz/LEDGER.md` est la source de vérité unique de ce que l'utilisateur sait : une ligne par fait testable, lue pour sélectionner les questions, réécrite après correction. Les faits sont distillés du corpus `ASAP_Agent/` ; le ledger est le seul fichier que ce skill possède.
+`quiz/LEDGER.md` est la source de vérité unique de ce que l'utilisateur sait : une ligne par fait testable, lue pour sélectionner les questions, réécrite après correction. Les faits sont distillés du corpus ; le ledger est le seul fichier que ce skill possède.
 
 ## En-tête
 
-    # Ledger — session : 4 — synced : fc5b60e (2026-07-31)
+    # Ledger — session : 4 — corpus : docs/ — synced : fc5b60e (2026-07-31)
 
 - **session** — compteur, +1 par session terminée. Toute l'arithmétique de planification compte en sessions, pas en jours : les sessions sont irrégulières, une révision échoit donc à un numéro de session, jamais à une date.
-- **synced** — le commit d'`ASAP_Agent` distillé en dernier. L'étape de sync le compare à HEAD.
+- **corpus** — ce dont les faits sont distillés : un chemin relatif au workspace (`.`, `docs/`, `../mon-projet/`) ou `conversation`.
+- **synced** — l'état du corpus distillé en dernier. Si le corpus est un dépôt git : le hash du commit, plus la date entre parenthèses. Sinon : la date seule. Pour `conversation` : la date de la dernière distillation. L'étape de sync le compare à l'état actuel.
 
 ## Sections
 
-Les faits sont groupés en sections thématiques numérotées ; chaque titre de section cite le ou les fichiers du corpus qu'elle distille, pour rouvrir la bonne source au moment de composer ou de corriger.
+Les faits sont groupés en sections thématiques numérotées ; chaque titre de section cite le ou les fichiers du corpus qu'elle distille, pour rouvrir la bonne source au moment de composer ou de corriger. Une section **Fog** peut regrouper les inconnues assumées du corpus (questions ouvertes, décisions non prises).
 
 ## Lignes d'item
 
-    - `09.03` [b2 appli due:6] Oracle de scoring : les smileys ASAP2 stockés dans l'ES = non-régression de la reprise ; ne valide pas le /100. — ✘s2 ✔s4
+    - `09.03` [b2 appli due:6] Le cache est reconstruit depuis la base à chaque démarrage ; il ne fait pas foi. — ✘s2 ✔s4
 
 - **id** — `SS.NN`, section + rang. Stable pour toujours : l'id est l'identité du fait, jamais renuméroté ; les faits nouveaux prennent le rang suivant en fin de section.
 - **box** — boîte de Leitner `b0`…`b4` (ci-dessous).
@@ -40,7 +41,13 @@ Les faits sont groupés en sections thématiques numérotées ; chaque titre de 
 
 ## Sync — distiller le corpus
 
-Au premier passage comme à chaque session : lister ce qui a bougé (`git -C ASAP_Agent log --oneline <synced>..HEAD`, puis `git -C ASAP_Agent diff --stat <synced>..HEAD` si besoin), rouvrir les fichiers touchés, et reverser :
+Au premier passage comme à chaque session, lister ce qui a bougé depuis `synced` :
+
+- **Corpus git** — `git -C <corpus> log --oneline <synced>..HEAD`, puis `git -C <corpus> diff --stat <synced>..HEAD` si besoin.
+- **Corpus non versionné** — les fichiers modifiés depuis la date `synced` (`find <corpus> -newermt <date>`), ou tout le corpus au premier passage.
+- **Conversation** — ce qui a été dit depuis la dernière distillation.
+
+Rouvrir les sources touchées, et reverser :
 
 - **Fait nouveau** → nouvelle ligne `b0` en fin de la section adéquate (ou nouvelle section si le thème est neuf).
 - **Fait corrigé** → réécrire l'énoncé *sur place* : même id, boîte et historique conservés — l'identité du fait survit à sa formulation.

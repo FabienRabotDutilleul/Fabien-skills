@@ -121,6 +121,7 @@ Getting what's in your head, or in the thread, onto durable paper.
 - **`/brain-to-docs`** — extract a project's vision, decisions and preferences from your head into README + ADRs through a Q&A loop. It's `/grill-with-docs`'s cousin aimed at *documentation* rather than a build.
 - **`/remind`** — mid-conversation reset: rewrites the last response simpler and shorter, prefixed with a TLDR of the thread so far.
 - **`/wait-what`** — the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain English, using the `CONTEXT.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
+- **`/unslop`** — the editing pass over prose: it strips the AI tells (puffery, the signature vocabulary, em dashes, inline-header lists, passive voice) and puts a voice back in. Unlike everything else in this section it is **model-invoked and meant to run on every piece of writing**, so the agent reaches for it by itself — name it explicitly only when a draft came out sounding generated anyway.
 
 ## Agents and the machine
 

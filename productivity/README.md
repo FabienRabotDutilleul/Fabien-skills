@@ -21,6 +21,7 @@ par écrit, la dessiner, l'apprendre — et la faire passer, à un agent comme �
 | `to-questionnaire` | Ce qui te bloque n'est ni dans ta tête ni dans le code mais dans celle de quelqu'un d'autre : produit le questionnaire à lui envoyer. L'inverse de `grill-me` — il t'interroge sur l'envoi (à qui, pour obtenir quoi), pas sur le sujet. |
 | `remind` | Réécrit la dernière réponse en plus court et plus simple, précédée d'un TLDR de la conversation. Manuel, via `/remind`. |
 | `wait-what` | Le message n'est pas passé : l'agent le re-pitche avec le contexte qui te manquait, en anglais technique simplifié et dans le vocabulaire de `CONTEXT.md`. Manuel, via `/wait-what`. |
+| `unslop` | Retire les tics d'écriture d'IA d'un texte : puffery, vocabulaire signature, tirets cadratins, listes à en-tête inline, voix passive — 31 patterns, plus une section pour remettre de la voix. Le seul du dossier que l'agent déclenche tout seul : sa description dit de s'appliquer à chaque fois qu'il écrit. |
 
 ## `diagrams/` — dessiner
 
@@ -53,6 +54,9 @@ un autre poste, un autre dépôt, un collègue — `wizard` produit l'artefact q
 
 - `grilling`, `grill-me`, `grill-with-docs` et `prototype` forment une même famille : commence
   par `grilling` si tu ne sais pas lequel prendre.
+- `unslop` est le seul skill de la collection écrit pour tourner en permanence. Il ne produit
+  rien : il repasse sur ce qui vient d'être écrit, ici ou dans n'importe quel autre skill.
+  Installe-le sans `disable-model-invocation` ou il ne servira à rien.
 - `excalidraw-diagram` a besoin d'un environnement Python (`references/pyproject.toml`) pour le
   rendu ; il n'est pas versionné, monte-le avec `uv sync` dans `references/`.
 

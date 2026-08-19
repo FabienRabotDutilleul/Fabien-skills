@@ -1,6 +1,6 @@
 # Fabien-skills
 
-Ma collection de skills pour Claude Code : 49 skills rangés par usage plutôt que par ordre
+Ma collection de skills pour Claude Code : 50 skills rangés par usage plutôt que par ordre
 d'arrivée. Chaque dossier principal porte son propre README qui explique brièvement ce que fait
 chacun de ses skills.
 
@@ -9,7 +9,7 @@ chacun de ses skills.
 | Dossier | Ce qu'on y trouve | Nb |
 |---|---|---|
 | [`engineering/`](engineering/) | Concevoir, écrire, relire du code et le découper en travail | 16 |
-| [`productivity/`](productivity/) | Durcir une idée, l'écrire, la dessiner, l'apprendre | 15 |
+| [`productivity/`](productivity/) | Durcir une idée, l'écrire, la dessiner, l'apprendre | 16 |
 | [`kb/`](kb/) | Faire entrer du savoir dans une base lisible par agent | 10 |
 | [`research/`](research/) | Déléguer le travail de lecture | 3 |
 | [`agent-ops/`](agent-ops/) | Configurer et cadrer les agents eux-mêmes | 4 |
