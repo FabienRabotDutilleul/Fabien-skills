@@ -2,7 +2,7 @@
   "repo": "FabienRabotDutilleul/Fabien-skills",
   "ref": "main",
   "version": 1,
-  "count": 50,
+  "count": 51,
   "categories": [
     {
       "id": "agent-ops",
@@ -22,7 +22,7 @@
     {
       "id": "productivity",
       "description": "Durcir une idée, l'écrire, la dessiner, l'apprendre",
-      "count": 16
+      "count": 17
     },
     {
       "id": "research",
@@ -1515,6 +1515,39 @@
         {
           "path": "SKILL.md",
           "bytes": 7258
+        }
+      ]
+    },
+    {
+      "name": "lquiz",
+      "path": "productivity/learning/lquiz",
+      "category": "productivity",
+      "group": "learning",
+      "description": "Le skill quiz joué dans le navigateur via Lavish Editor — deux questions en vol, page HTML qui devient le document de révision de la session. Même corpus, même ledger, mêmes règles que quiz.",
+      "argumentHint": "Corpus et/ou thème (optionnels), ex. « docs/ », « scoring », « cette conversation »",
+      "disableModelInvocation": true,
+      "allowedTools": null,
+      "license": null,
+      "badges": [
+        {
+          "kind": "required",
+          "label": "requiert le skill quiz installé à côté (../quiz/) et lavish-axi"
+        }
+      ],
+      "setup": null,
+      "bytes": 22305,
+      "files": [
+        {
+          "path": "render.py",
+          "bytes": 14867
+        },
+        {
+          "path": "SKILL.md",
+          "bytes": 4699
+        },
+        {
+          "path": "STATE-FORMAT.md",
+          "bytes": 2739
         }
       ]
     },

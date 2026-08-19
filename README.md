@@ -129,7 +129,7 @@ que tu préfères un lien à une copie, ouvre une issue — je bascule sans disc
 ## Contexte métier
 
 Quelques skills portent encore du contexte spécifique à mes projets et ne s'utiliseront pas
-tels quels ailleurs : `quiz`, `classify_output`,
+tels quels ailleurs : `classify_output`,
 `inject_into_knowledge_base`. Ils restent publiés parce que la mécanique est réutilisable même
 si le domaine ne l'est pas.
 

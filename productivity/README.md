@@ -36,6 +36,7 @@ par écrit, la dessiner, l'apprendre — et la faire passer, à un agent comme �
 |---|---|
 | `teach` | Enseigne un concept ou une compétence en s'appuyant sur le workspace courant. |
 | `quiz` | Séance de quiz adaptatif (QCM + questions ouvertes) sur un corpus de documents, pour vérifier ce qui est réellement acquis. |
+| `lquiz` | Le même quiz joué dans le navigateur via Lavish Editor : deux questions en vol, la sonde gardée par question, la page corrigée devient le document de révision de la session. Requiert `quiz` installé à côté (il en lit les règles) et `lavish-axi`. |
 
 ## `setup/` — franchir une procédure
 
