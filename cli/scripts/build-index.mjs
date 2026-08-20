@@ -41,7 +41,19 @@ const BADGES = {
     { kind: "cost", label: "API managée payante — les autres channel-to-kb* sont gratuits" },
   ],
   "productivity/learning/lquiz": [
-    { kind: "required", label: "requiert le skill quiz installé à côté (../quiz/) et lavish-axi" },
+    { kind: "deps", label: "requiert le skill quiz installé à côté (../quiz/) et lavish-axi" },
+  ],
+  "agent-ops/ask-me": [
+    { kind: "recommended", label: "fortement conseillé en mode auto" },
+  ],
+  "engineering/codebase-design": [
+    { kind: "recommended", label: "fortement conseillé en mode auto" },
+  ],
+  "engineering/domain-modeling": [
+    { kind: "recommended", label: "fortement conseillé en mode auto" },
+  ],
+  "productivity/writing/unslop": [
+    { kind: "recommended", label: "fortement conseillé en mode auto" },
   ],
   "research/*": [
     { kind: "sandbox", label: "lit du web arbitraire — prompt injection, à lancer en sandbox" },

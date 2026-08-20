@@ -46,7 +46,12 @@
       "disableModelInvocation": true,
       "allowedTools": null,
       "license": null,
-      "badges": [],
+      "badges": [
+        {
+          "kind": "recommended",
+          "label": "fortement conseillé en mode auto"
+        }
+      ],
       "setup": null,
       "bytes": 21215,
       "files": [
@@ -171,7 +176,12 @@
       "disableModelInvocation": null,
       "allowedTools": null,
       "license": null,
-      "badges": [],
+      "badges": [
+        {
+          "kind": "recommended",
+          "label": "fortement conseillé en mode auto"
+        }
+      ],
       "setup": null,
       "bytes": 11861,
       "files": [
@@ -231,7 +241,12 @@
       "disableModelInvocation": null,
       "allowedTools": null,
       "license": null,
-      "badges": [],
+      "badges": [
+        {
+          "kind": "recommended",
+          "label": "fortement conseillé en mode auto"
+        }
+      ],
       "setup": null,
       "bytes": 8593,
       "files": [
@@ -1530,7 +1545,7 @@
       "license": null,
       "badges": [
         {
-          "kind": "required",
+          "kind": "deps",
           "label": "requiert le skill quiz installé à côté (../quiz/) et lavish-axi"
         }
       ],
@@ -1865,7 +1880,12 @@
       "disableModelInvocation": null,
       "allowedTools": null,
       "license": null,
-      "badges": [],
+      "badges": [
+        {
+          "kind": "recommended",
+          "label": "fortement conseillé en mode auto"
+        }
+      ],
       "setup": null,
       "bytes": 6684,
       "files": [

@@ -63,6 +63,7 @@ export const s = {
 
 export const BADGES = {
   required: { label: "à installer en premier", color: c.magenta, icon: "★" },
+  recommended: { label: "fortement conseillé en auto", color: c.green, icon: "★" },
   cost: { label: "payant", color: c.yellow, icon: "€" },
   sandbox: { label: "sandbox", color: c.yellow, icon: s.warn },
 };

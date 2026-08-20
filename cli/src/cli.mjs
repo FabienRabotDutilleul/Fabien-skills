@@ -250,6 +250,7 @@ export async function run(argv) {
   const caveats = [];
   for (const skill of chosen) {
     for (const badge of skill.badges ?? []) {
+      if (badge.kind === "recommended") continue; // une recommandation n'est pas un caveat
       caveats.push(`${c.bold(skill.name)} ${c.gray(badge.label)}`);
     }
     if (skill.setup) {
