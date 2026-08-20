@@ -25,9 +25,14 @@ async function session(render) {
   let drawn = 0;
   const paint = (frame) => {
     eraseLines(drawn);
-    const lines = frame.split("\n");
+    // Never paint taller than the window: a frame that overflows scrolls the
+    // terminal on every repaint, out of reach of eraseLines, and each keypress
+    // then leaks a stale copy of the top lines into the scrollback.
+    let lines = frame.split("\n");
+    const max = Math.max(1, (stdout.rows || 24) - 1);
+    if (lines.length > max) lines = lines.slice(0, max);
     drawn = lines.length;
-    write(`${frame}\n`);
+    write(`${lines.join("\n")}\n`);
   };
 
   try {
@@ -141,19 +146,36 @@ export function multiselect({ title, skills, preselected = new Set() }) {
     cursor = Math.max(0, Math.min(cursor, items.length - 1));
 
     // Scroll the flattened row list so the highlighted skill stays visible along
-    // with the header it belongs to.
+    // with the header it belongs to. The budget is counted in *physical* lines —
+    // a header renders on two (blank bar + label), a skill on one — because a
+    // frame taller than the window scrolls the terminal on every repaint and
+    // litters the scrollback with stale copies of itself.
     const cursorRow = rows.indexOf(items[cursor]);
     const cols = columns();
-    const viewport = Math.max(5, Math.min(items.length + 6, (process.stdout.rows || 24) - 11));
+    const chrome = 9 + (filter ? 1 : 0); // title, bars, description, meta, help, trailing newline
+    const budget = Math.max(4, (process.stdout.rows || 24) - chrome);
+    const cost = (row) => (row.type === "header" ? 2 : 1);
+    // Last row index (exclusive) that fits in the budget when starting at `from`.
+    const endFrom = (from) => {
+      let used = 0;
+      let i = from;
+      while (i < rows.length && used + cost(rows[i]) <= budget) used += cost(rows[i++]);
+      return Math.max(i, from + 1); // always show at least the cursor row
+    };
     if (cursorRow < offset) offset = Math.max(0, cursorRow - 1);
-    if (cursorRow >= offset + viewport) offset = cursorRow - viewport + 1;
-    offset = Math.max(0, Math.min(offset, Math.max(0, rows.length - viewport)));
+    while (offset < cursorRow && endFrom(offset) <= cursorRow) offset += 1;
+    // Don't leave dead space at the bottom when the end of the list fits.
+    while (offset > 0 && endFrom(offset - 1) >= rows.length) offset -= 1;
+    const visible = rows.slice(offset, endFrom(offset));
 
     const bar = c.gray(s.bar);
     const out = [];
     out.push(
-      `${accent(s.active)}  ${c.bold(title)}` +
-        `  ${c.gray(`${selected.size} choisi${selected.size > 1 ? "s" : ""} · ${items.length}/${skills.length}`)}`,
+      truncate(
+        `${accent(s.active)}  ${c.bold(title)}` +
+          `  ${c.gray(`${selected.size} choisi${selected.size > 1 ? "s" : ""} · ${items.length}/${skills.length}`)}`,
+        cols,
+      ),
     );
     out.push(bar);
 
@@ -163,7 +185,7 @@ export function multiselect({ title, skills, preselected = new Set() }) {
       out.push(`${bar}  ${c.gray("aucun skill ne correspond")}`);
     }
 
-    for (const row of rows.slice(offset, offset + viewport)) {
+    for (const row of visible) {
       if (row.type === "header") {
         out.push(`${bar}`);
         out.push(`${bar}  ${c.dim(c.underline(row.label))}`);
@@ -224,7 +246,7 @@ export function select({ title, options, initial = 0 }) {
 
     const bar = c.gray(s.bar);
     const cols = columns();
-    const out = [`${accent(s.active)}  ${c.bold(title)}`, bar];
+    const out = [truncate(`${accent(s.active)}  ${c.bold(title)}`, cols), bar];
     options.forEach((option, i) => {
       const on = i === cursor;
       const dot = on ? accent(s.on) : c.gray(s.off);
